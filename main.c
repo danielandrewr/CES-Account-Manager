@@ -183,8 +183,13 @@ void Cari_Slave(struct SlaveAccount *head, unsigned char *password){
 		printf("Ingin mencari lagi?\n1. Ya\n2. Tidak\n");
 		inputAngka(&again,1,2);
 		printf("\033[0;0H\033[2J"); //clear console di repl
-	}while(again != 1);
-	
+		
+		free(decrypted_website);
+		free(decrypted_email);
+		free(decrypted_password);
+		free(pencarian);
+	}while(again != 1);	
+	ptr = NULL;	
 }
 void Login_Success(struct MasterAccount *head, unsigned char *password){
 	unsigned char *decrypted_username = malloc(USERNAME_MAX*sizeof(unsigned char));
