@@ -27,7 +27,7 @@ void strcat(unsigned char *destination, unsigned char *source){
 	destination[size_keduanya + 1] = '\0';
 }
 
-int strcmp_MD5(unsigned char *str1, unsigned char *str2){
+int strcmp_MD5(const unsigned char *str1,const  unsigned char *str2){
 	register int i,flag = 1;
 	
 	//#pragma omp parallel for shared(flag)

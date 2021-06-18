@@ -38,7 +38,7 @@ char encrypt(unsigned char *M, unsigned char *key, int *flag){
 				}
 			}
 		}
-	}
+	}a
 	return 0;
 }
 char decrypt(unsigned char *M, unsigned char *key,int *flag){
