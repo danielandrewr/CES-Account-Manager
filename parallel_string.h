@@ -41,3 +41,28 @@ int strcmp_MD5(unsigned char *str1, unsigned char *str2){
 	}
 	return !flag;
 }
+int strcasestr(const unsigned char * string, const unsigned char * toFind) {
+  register int slen = strlen(string);
+  register int tFlen = strlen(toFind);
+  register int found = 0, s,t;
+  
+
+  if (slen >= tFlen) {
+    for ( s = 0, t = 0; s < slen; s++) {
+      do {
+
+        if (string[s] == toFind[t] || string[s] == toFind[t] + 32 || string[s] + 32 == toFind[t]) {
+          if (++found == tFlen) return 0;
+          s++;
+          t++;
+        } else {
+          s -= found;
+          found = 0;
+          t = 0;
+        }
+
+      } while (found);
+    }
+    return 1;
+  } else return -1;
+}
