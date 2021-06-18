@@ -103,15 +103,40 @@ void Registrasi(struct MasterAccount *head){
 	free(temp_password);
 	ptr = NULL;
 }
+void Login_Success(struct MasterAccount *head, unsigned char *password){
+	unsigned char *decrypted_username = malloc(USERNAME_MAX*sizeof(unsigned char));
+	strcpy(decrypted_username, head->username);
+	decrypt(decrypted_username, password);
 
+	int pilihan;
+
+	do{
+		printf("Selamat datang, %s!\n",decrypted_username);
+		printf("Menu\n1. Tambah akun\n2. Cari akun\n3. Delete akun\n4. Logout");
+		inputAngka(&pilihan, 1,4);
+		switch (menu){
+			case 1: Add_Slave(head);
+							break;
+			case 2: 
+		}
+	}
+}
 void Login(struct MasterAccount *head) {
 	bool authenticated = false;
+	int exit = 2;
 
-	unsigned char *temp_email = malloc(355*sizeof(unsigned char));
-	unsigned char *temp_password = malloc(101*sizeof(unsigned char));
-	unsigned char *temp_md5 = malloc(16*sizeof(unsigned char));
+	struct MasterAccount *ptr = NULL:
+
+	unsigned char *temp_email = NULL;
+	unsigned char *temp_password = NULL;
+	unsigned char *temp_md5 = NULL:
 
 	do {
+		ptr = head;
+		temp_email = malloc(355*sizeof(unsigned char));
+		temp_password = malloc(101*sizeof(unsigned char));
+		temp_md5 = malloc(16*sizeof(unsigned char));
+
 		printf("\n\nMasukkan email\t: ");
 		inputString(temp_email,EMAIL_MIN,EMAIL_MAX);
 		printf("\n\nMasukkan password\t: ");
@@ -120,16 +145,25 @@ void Login(struct MasterAccount *head) {
 		strcat(temp_email,temp_password);
 
 		md5(temp_email,strlen(temp_email)+strlen(temp_password),temp_md5);
+		free(temp_email);
 
-		
-		if ((!strcmp(, email) != 0){
-			printf("\nUps, Something went wrong!\n");
-		} else {
-			printf("\nAuthenticated!\n");
-			authenticated = true;
-			break;
+		while(ptr != NULL){
+			if (!strcmp_MD5(ptr->md5_auth,temp_md5)){
+				authenticated = true;
+				printf("Telah berhasil login!");
+				Login_Success(ptr, temp_password);
+				break;
+			}else{
+				ptr = ptr->next;
+			}
 		}
-	} while (!authenticated);
+		if (ptr!= NULL){
+			printf("Email dan password salah!\n1. Input ulang email dan password\n2. Exit\n");
+			inputAngka(&exit, 1, 2);
+		}
+		free(temp_password);
+		free(temp_md5);
+	} while (!authenticated && exit == 1);
 }
 
 int main(void) {
@@ -140,7 +174,7 @@ int main(void) {
 
 	int menu;
 	printf("Selamat datang di Proglan Account Manager!\n");
-  printf("Silahkan pilih salah satu menu\n")
+  	printf("Silahkan pilih salah satu menu\n")
 	do{
 		printf("Menu\n1. Register\n2. Login\n3. Exit\n");
 		printf("Masukkan pilihan: ");
@@ -160,20 +194,3 @@ int main(void) {
 	return 0;
 }
 
-// fungsi ngecek filenya ada isi
-/*bool ifFileNotNull(FILE *fptr) {
-	bool fileNotNull = false;
-
-	fptr = fopen(fileName, "r");
-	if (fptr != NULL) {
-		fseek(fptr, 0, SEEK_END);
-		int fsize = ftell(fptr);
-		if (fsize != 0)
-			fileNotNull = true;  
-
-	} else 
-		printf("\nUps, Something went wrong!\n");
-		
-	return fileNotNull;
-}
-*/
