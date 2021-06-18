@@ -110,6 +110,7 @@ void Add_Slave(struct SlaveAccount *head_slave, unsigned char *password){
 	while(ptr->next != NULL){
 		ptr = ptr->next;
 	}
+
 	do{
 		temp_website = malloc(USERNAME_MAX*sizeof(unsigned char));
 		temp_email = malloc(EMAIL_MAX*sizeof(unsigned char));
@@ -126,12 +127,28 @@ void Add_Slave(struct SlaveAccount *head_slave, unsigned char *password){
 		printf("Apakah anda yakin dengan perubahan ini?\n1. Yakin\n2. Ulangi input 3. Tidak jadi input\n");
 		inputAngka(&yakin,1,3);
 		switch (yakin){
-			case 1: 
-		}
-	} while(yakin != 1);
-	
+			case 1: encrypt(temp_website,password);
+							encrypt(temp_email,password);
+							encrypt(temp_password,password);
 
-	
+							strcpy(ptr->website,temp_website);
+							strcpy(ptr->email,temp_email);
+							strcpy(ptr->password,temp_password);
+							break;
+			case 2: break;
+			default: break;
+
+		}
+	} while(yakin == 2);
+
+	free(temp_website);
+	free(temp_email);
+	free(temp_password);
+	ptr = NULL;
+
+}
+void Cari_Slave(struct SlaveAccount *head, unsigned char *password){
+	struct SlaveAccount ptr = head;
 }
 void Login_Success(struct MasterAccount *head, unsigned char *password){
 	unsigned char *decrypted_username = malloc(USERNAME_MAX*sizeof(unsigned char));
@@ -147,11 +164,14 @@ void Login_Success(struct MasterAccount *head, unsigned char *password){
 		switch (menu){
 			case 1: Add_Slave(head->slave,password);
 							break;
-			case 2: 
+			case 2: Cari_Slave(head->slave,password);
+							break;
+
 		}
 	}while (pilihan != 4);
 	free(decrypted_username);
 }
+
 void Login(struct MasterAccount *head) {
 	bool authenticated = false;
 	int exit = 2;
