@@ -14,29 +14,29 @@ bool ifFileNotNull(FILE *fptr, char fileName[50]) {
 	return fileNotNull;
 }
 
-void createFileWithMasterAccount(FILE *fptr, char fileName[50], struct MasterAccount *head) {
-    struct MasterAccount *data;
-	fptr = fopen("account.txt", "w");
-	if (fptr != NULL) {
-		if (ifFileNotNull(fptr, fileName)) {
-			do{
-				fprintf("%s\n", data->username);//masukin username master
-				fprintf("%s\n", data->md5_auth);//md5 authorization
-				do {
-					fprintf("%s\n", data->slave->website);//masukin website
-					fprintf("%s\n", data->slave->email);//masukin email
-					fprintf("%s\n", data->slave->password);//masukin password
-					data->slave = data->slave->next;
-				} while(data != NULL);
-        	fprintf("***\n");//penanda slave terakhir
-        	data = data->next;//nextnya dipindah dulu ke data, nah berarti yang perlu dicek apakah datanya kosong ato ngga
-			} while (data != NULL);
-			printf("File %s berhasil dibuat!\n", fileName);
-		} else printf("Ups, something went wrong");
-	} else printf("Ups, something went wrong!\n");
+// void createFileWithMasterAccount(FILE *fptr, char fileName[50], struct MasterAccount *head) {
+//     struct MasterAccount *data;
+// 	fptr = fopen("account.txt", "w");
+// 	if (fptr != NULL) {
+// 		if (ifFileNotNull(fptr, fileName)) {
+// 			do{
+// 				fprintf("%s\n", data->username);//masukin username master
+// 				fprintf("%s\n", data->md5_auth);//md5 authorization
+// 				do {
+// 					fprintf("%s\n", data->slave->website);//masukin website
+// 					fprintf("%s\n", data->slave->email);//masukin email
+// 					fprintf("%s\n", data->slave->password);//masukin password
+// 					data->slave = data->slave->next;
+// 				} while(data != NULL);
+//         	fprintf("***\n");//penanda slave terakhir
+//         	data = data->next;//nextnya dipindah dulu ke data, nah berarti yang perlu dicek apakah datanya kosong ato ngga
+// 			} while (data != NULL);
+// 			printf("File %s berhasil dibuat!\n", fileName);
+// 		} else printf("Ups, something went wrong");
+// 	} else printf("Ups, something went wrong!\n");
 
-	fclose(fptr); //wah ini pusing gw bacanya
-}
+// 	fclose(fptr); //wah ini pusing gw bacanya
+// }
 
 void createFileWithMasterAccount(FILE *fptr, struct MasterAccount *head, char fileName[50]) {
 	struct MasterAccount *data;
@@ -50,23 +50,27 @@ void createFileWithMasterAccount(FILE *fptr, struct MasterAccount *head, char fi
 			scanf("%d", &choice);
 			do {
 				if (choice == 1) {
-					
+					while (head->next != NULL) {
+					fprintf("%s\n", head->username);
+					fprintf("%s\n", head->md5_auth);
+
+						while (data->next != NULL) {
+							fprintf("%s\n", data->slave->website);
+							fprintf("%s\n", data->slave->email);
+							fprintf("%s\n", data->slave->password);
+							data = data->slave->next;
+						}
+						
+					fprintf("***\n");
+					head = head->next;
+					}
+				} else if (choice == 2) {
+					access = -1;
+					break;
+				} else {
+					printf("Tolong masukkan input yang valid!\n");
 				}
 			} while (access != -1);
-			
-			while (head->next != NULL) {
-				fprintf("%s\n", head->username);
-				fprintf("%s\n", head->md5_auth);
-
-				while (data->next != NULL) {
-					fprintf("%s\n", data->slave->website);
-					fprintf("%s\n", data->slave->email);
-					fprintf("%s\n", data->slave->password);
-					data = data->slave->next;
-				}
-				fprintf("***\n");
-				head = head->next;
-			}
 		}
 	}
 }
