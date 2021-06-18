@@ -50,23 +50,7 @@ void inputAngka(int * angka, int batas_bawah, int batas_atas) {
   } while ( * angka < batas_bawah || * angka > batas_atas);
 }
 
-// fungsi ngecek filenya ada isi
-/*bool ifFileNotNull(FILE *fptr) {
-	bool fileNotNull = false;
 
-	fptr = fopen(fileName, "r");
-	if (fptr != NULL) {
-		fseek(fptr, 0, SEEK_END);
-		int fsize = ftell(fptr);
-		if (fsize != 0)
-			fileNotNull = true;  
-
-	} else 
-		printf("\nUps, Something went wrong!\n");
-		
-	return fileNotNull;
-}
-*/
 void inputString(unsigned char * string, const unsigned int batas_bawah, const unsigned int batas_atas) {
   unsigned short int i, count = 0;
   unsigned char *input = malloc(256*sizeof(unsigned char));
@@ -147,7 +131,7 @@ void Login(struct MasterAccount *head) {
 		printf("\n\nMasukkan password\t: ");
 		inputString(temp_password,PASSWORD_MIN,PASSWORD_MAX);
 		
-		strcat(temp_email,temp_)
+		strcat(temp_email,temp_password);
 
 		// Autentikasi email dan password // coba liat args terakhir hash functionya
 		if ((strcmp(head->username, email) != 0) && 
@@ -187,3 +171,21 @@ int main(void) {
 	printf("Terima kasih karena telah menggunakan aplikasi Account Manager!");
 	return 0;
 }
+
+// fungsi ngecek filenya ada isi
+/*bool ifFileNotNull(FILE *fptr) {
+	bool fileNotNull = false;
+
+	fptr = fopen(fileName, "r");
+	if (fptr != NULL) {
+		fseek(fptr, 0, SEEK_END);
+		int fsize = ftell(fptr);
+		if (fsize != 0)
+			fileNotNull = true;  
+
+	} else 
+		printf("\nUps, Something went wrong!\n");
+		
+	return fileNotNull;
+}
+*/
