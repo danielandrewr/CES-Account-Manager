@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-
 #include <stdbool.h>
 #include "md5.h"
 #include "parallel_string.h"
@@ -13,8 +12,6 @@
 #define PASSWORD_MIN 6
 #define PASSWORD_MAX 100
 #define MD5_SIZE 16
-
-
 
 struct SlaveAccount{
 	unsigned char website[USERNAME_MAX];
@@ -103,6 +100,33 @@ void Registrasi(struct MasterAccount *head){
 	free(temp_password);
 	ptr = NULL;
 }
+void Add_Slave(struct SlaveAccount *head_slave, unsigned char *password){
+	struct SlaveAccount *ptr = head_slave;
+	int yakin;
+	unsigned char *temp_website = NULL;
+	unsigned char *temp_email = NULL;
+	unsigned char *temp_password = NULL;
+
+	while(ptr->next != NULL){
+		ptr = ptr->next;
+	}
+	do{
+		temp_website = malloc(USERNAME_MAX*sizeof(unsigned char));
+		temp_email = malloc(EMAIL_MAX*sizeof(unsigned char));
+		temp_password = malloc(PASSWORD_MAX*sizeof(unsigned char));
+
+		
+		printf("Website baru: ");
+		inputString(temp_website,USERNAME_MIN,USERNAME_MAX);
+		printf("Email baru: ");
+		inputString(temp_email,EMAIL_MIN,EMAIL_MAX);
+		printf("Password baru: ");
+		inputString(temp_password,USERNAME_MIN,USERNAME_MAX);
+	}
+	
+
+	
+}
 void Login_Success(struct MasterAccount *head, unsigned char *password){
 	unsigned char *decrypted_username = malloc(USERNAME_MAX*sizeof(unsigned char));
 	strcpy(decrypted_username, head->username);
@@ -115,11 +139,12 @@ void Login_Success(struct MasterAccount *head, unsigned char *password){
 		printf("Menu\n1. Tambah akun\n2. Cari akun\n3. Delete akun\n4. Logout");
 		inputAngka(&pilihan, 1,4);
 		switch (menu){
-			case 1: Add_Slave(head);
+			case 1: Add_Slave(head->slave,password);
 							break;
 			case 2: 
 		}
-	}
+	}while (pilihan != 4);
+	free(decrypted_username);
 }
 void Login(struct MasterAccount *head) {
 	bool authenticated = false;
@@ -184,13 +209,12 @@ int main(void) {
 				break;
 			case 2: //Login(head);
 				break;
-      case 3:
-        printf("Terima kasih karena telah menggunakan aplikasi Account Manager!");
-			default: 
-      break;
-		}
-		
-	} while (menu != 3);
+      		case 3:
+				printf("Terima kasih karena telah menggunakan aplikasi Account Manager!");
+				default: 
+      			break;
+		}		
+	} while ((menu >= 1) && (menu <= 2));
 	return 0;
 }
 

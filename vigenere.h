@@ -14,6 +14,7 @@ int special(register int a, register int b){ //function for negative numbers of 
 		return special(a+b,b);
 	}
 }
+
 void encrypt(unsigned char *M, unsigned char *key) {
 	register int maksKey, maksM;
   maksKey = strlen(key);

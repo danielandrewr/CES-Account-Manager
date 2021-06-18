@@ -15,20 +15,22 @@ bool ifFileNotNull(FILE *fptr, char fileName[50]) {
 }
 
 void createFileWithMasterAccount(FILE *fptr, char fileName[50], struct MasterAccount *head) {
-  struct MasterAccount *data;
+    struct MasterAccount *data;
 	fptr = fopen("account.txt", "w");
 	if (fptr != NULL) {
 		if (ifFileNotNull(fptr, fileName)) {
 			do{
-				fprintf("MasterAccount 1\n");//kayaknya ini gausa, kan encrypted text, langsung aja user hash
-				fprintf("\tUsername: ");
-				fprintf("\tmd5_auth: ");
-        do{
-          fprintf("inislave");
-          data->slave = data->slave->next;
-        }while(data->slave != NULL);
-        data = data->next;
-			} while (data->next != NULL);
+				fprintf("%s\n", data->username);//masukin username master
+				fprintf("%s\n", data->md5_auth);//md5 authorization
+				do {
+					fprintf("%s\n", data->slave->website);//masukin website
+					fprintf("%s\n", data->slave->email);//masukin email
+					fprintf("%s\n", data->slave->password);//masukin password
+					data->slave = data->slave->next;
+				} while(data != NULL);
+        	fprintf("***\n");//penanda slave terakhir
+        	data = data->next;//nextnya dipindah dulu ke data, nah berarti yang perlu dicek apakah datanya kosong ato ngga
+			} while (data != NULL);
 			printf("File %s berhasil dibuat!\n", fileName);
 		} else printf("Ups, something went wrong");
 	} else printf("Ups, something went wrong!\n");
@@ -36,9 +38,35 @@ void createFileWithMasterAccount(FILE *fptr, char fileName[50], struct MasterAcc
 	fclose(fptr); //wah ini pusing gw bacanya
 }
 
-void addAccountToFile(struct MasterAccount *head){
-  fptr = fopen("account.txt","w");
-  if (fptr != NULL){
-    ?????
-  }
+void createFileWithMasterAccount(FILE *fptr, struct MasterAccount *head, char fileName[50]) {
+	struct MasterAccount *data;
+	fptr = fopen(fileName, "w");
+
+	if (fptr != NULL) {
+		if (!ifFileNotNull(fptr, fileName)) {
+
+			int access = 0, choice;
+			printf("File yang ingin dioverride tidak kosong, Apakah Anda ingin melanjutkan?\n 1). Yes\n 2).No\n");
+			scanf("%d", &choice);
+			do {
+				if (choice == 1) {
+					
+				}
+			} while (access != -1);
+			
+			while (head->next != NULL) {
+				fprintf("%s\n", head->username);
+				fprintf("%s\n", head->md5_auth);
+
+				while (data->next != NULL) {
+					fprintf("%s\n", data->slave->website);
+					fprintf("%s\n", data->slave->email);
+					fprintf("%s\n", data->slave->password);
+					data = data->slave->next;
+				}
+				fprintf("***\n");
+				head = head->next;
+			}
+		}
+	}
 }
