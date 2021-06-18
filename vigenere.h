@@ -18,38 +18,38 @@ void encrypt(unsigned char *M, unsigned char *key) {
 	register int maksKey, maksM;
   maksKey = strlen(key);
   maksM = strlen(M);
-#pragma omp parallel shared (maksM,maksKey)
-{
+//#pragma omp parallel shared (maksM,maksKey)
+//{
   register int from, to, i, j;
   #pragma omp for
   for (i = 0; i < maksM; i += maksKey + 1) {
     from = i;
     to = i + maksKey;
-    #pragma omp task{
+    //#pragma omp task{
       for (j = from; j <= to; j++) {
        M[j] = mod((M[j] + key[j % maksKey]), 256);
       }
-    }
+    //}
   }
-}
+//}
 
 }
 void decrypt(unsigned char *M, unsigned char *key) {
   register int maksKey, maksM;
   maksKey = strlen(key);
   maksM = strlen(M);
-#pragma omp parallel shared (maksKey,maksM,M,key)
-{
+//#pragma omp parallel shared (maksKey,maksM,M,key)
+//{
   register int from, to, i, j;
-  #pragma omp for
+  //#pragma omp for
   for (i = 0; i < maksM; i += maksKey + 1) {
     from = i;
     to = i + maksKey;
-    #pragma omp task{
+    //#pragma omp task{
       for (j = from; j <= to; j++) {
         M[j] = mod((M[j] - key[j % maksKey]), 256);
       }
-    }
+    //}
   }
-}
+//}
 }

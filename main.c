@@ -109,6 +109,7 @@ void Login(struct MasterAccount *head) {
 
 	unsigned char *temp_email = malloc(355*sizeof(unsigned char));
 	unsigned char *temp_password = malloc(101*sizeof(unsigned char));
+	unsigned char *temp_md5 = malloc(16*sizeof(unsigned char));
 
 	do {
 		printf("\n\nMasukkan email\t: ");
@@ -118,9 +119,10 @@ void Login(struct MasterAccount *head) {
 		
 		strcat(temp_email,temp_password);
 
-		// Autentikasi email dan password // coba liat args terakhir hash functionya
-		if ((strcmp(head->username, email) != 0) && 
-			strcmp((md5(head->md5_auth, strlen(head->md5_auth), /*uint8_t *digest*/), hash) != 0)) {
+		md5(temp_email,strlen(temp_email)+strlen(temp_password),temp_md5);
+
+		
+		if ((!strcmp(, email) != 0){
 			printf("\nUps, Something went wrong!\n");
 		} else {
 			printf("\nAuthenticated!\n");
