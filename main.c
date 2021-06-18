@@ -148,7 +148,8 @@ void Add_Slave(struct SlaveAccount *head_slave, unsigned char *password){
 
 }
 void Cari_Slave(struct SlaveAccount *head, unsigned char *password){
-	struct SlaveAccount ptr = head;
+	struct SlaveAccount *ptr = head;
+
 }
 void Login_Success(struct MasterAccount *head, unsigned char *password){
 	unsigned char *decrypted_username = malloc(USERNAME_MAX*sizeof(unsigned char));
@@ -161,7 +162,7 @@ void Login_Success(struct MasterAccount *head, unsigned char *password){
 		printf("Selamat datang, %s!\n",decrypted_username);
 		printf("Menu\n1. Tambah akun\n2. Cari akun\n3. Delete akun\n4. Logout");
 		inputAngka(&pilihan, 1,4);
-		switch (menu){
+		switch (pilihan){
 			case 1: Add_Slave(head->slave,password);
 							break;
 			case 2: Cari_Slave(head->slave,password);
