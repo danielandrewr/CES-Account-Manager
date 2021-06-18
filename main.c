@@ -152,23 +152,24 @@ int main(void) {
 	head->slave ->next = NULL;
 
 	int menu;
-	printf("Selamat datang di Proglan Account Manager!");
+	printf("Selamat datang di Proglan Account Manager!\n");
+  printf("Silahkan pilih salah satu menu\n")
 	do{
 		printf("Menu\n1. Register\n2. Login\n3. Exit\n");
 		printf("Masukkan pilihan: ");
 		inputAngka(&menu,1,2);
 		switch (menu){
 			case 1: Registrasi(head);
-
 				break;
 			case 2: //Login(head);
 				break;
-			default: break;
+      case 3:
+        printf("Terima kasih karena telah menggunakan aplikasi Account Manager!");
+			default: 
+      break;
 		}
 		
 	} while (menu != 3);
-
-	printf("Terima kasih karena telah menggunakan aplikasi Account Manager!");
 	return 0;
 }
 
