@@ -147,7 +147,44 @@ void Add_Slave(struct SlaveAccount *head_slave, unsigned char *password){
 }
 void Cari_Slave(struct SlaveAccount *head, unsigned char *password){
 	struct SlaveAccount *ptr = head;
-
+	unsigned char *pencarian = NULL;
+	unsigned char *temp_website = NULL;
+	bool printed = false;
+	int again;
+	
+	do{
+		pencarian = malloc(USERNAME_MAX*sizeof(unsigned char));
+		decrypted_website = malloc(USERNAME_MAX*sizeof(unsigned char));
+		decrypted_email = malloc(EMAIL_MAX*sizeof(unsigned char));
+		decrypted_password = malloc(PASSWORD_MAX*sizeof(unsigned char));
+		printf("Masukkan akun website yang ingin dicari: ");
+		inputString(pencarian,1,USERNAME_MAX);
+		while (ptr != NULL){
+			strcpy(decrypted_website,ptr->website);
+			decrypt(decrypted_website,password);
+			if (!strcasestr(decrypted_website,pencarian)){
+				strcpy(decrypted_email,ptr->email);
+				strcpy(decrypted_password,ptr->password);
+				
+				decrypt(decrypted_email,password);
+				decrypt(decrypted_password,password);
+				
+				printf("\nWebsite: %s\n",decrypted_website);
+				printf("Email: %s\n",decrypted_email);
+				printf("Password: %s\n\n",decrypted_password);
+				
+				printed = true;
+			}
+			ptr = ptr->next;
+		}
+		if(!printed){
+			printf("\nAkun tidak ditemukan!\n");
+		}
+		printf("Ingin mencari lagi?\n1. Ya\n2. Tidak\n");
+		inputAngka(&again,1,2);
+		printf("\033[0;0H\033[2J"); //clear console di repl
+	}while(again != 1);
+	
 }
 void Login_Success(struct MasterAccount *head, unsigned char *password){
 	unsigned char *decrypted_username = malloc(USERNAME_MAX*sizeof(unsigned char));
