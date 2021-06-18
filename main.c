@@ -102,21 +102,6 @@ void Registrasi(struct MasterAccount *head){
 	free(temp_email);
 	free(temp_password);
 	ptr = NULL;
-	
-
-	/*
-	int len = strlen(temp);
-	printf("%d", len);
-	
-	FILE *fptr;
-	fptr = fopen(fileName, "w");
-
-	if (ifFileNotNull(fptr) != false) {
-		// make new account
-	} else {
-		// write new master account
-	}
-	*/
 }
 
 void Login(struct MasterAccount *head) {
