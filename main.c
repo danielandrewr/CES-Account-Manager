@@ -100,16 +100,15 @@ void Registrasi(struct MasterAccount *head){
 	free(temp_password);
 	ptr = NULL;
 }
-void Add_Slave(struct SlaveAccount *head_slave, unsigned char *password){
-	struct SlaveAccount *ptr = head_slave;
+void Add_Slave(struct SlaveAccount **head_slave, unsigned char *password){
+	struct SlaveAccount *ptr = NULL;
+	
 	int yakin;
 	unsigned char *temp_website = NULL;
 	unsigned char *temp_email = NULL;
 	unsigned char *temp_password = NULL;
 
-	while(ptr->next != NULL){
-		ptr = ptr->next;
-	}
+	
 
 	do{
 		temp_website = malloc(USERNAME_MAX*sizeof(unsigned char));
@@ -127,7 +126,14 @@ void Add_Slave(struct SlaveAccount *head_slave, unsigned char *password){
 		printf("Apakah anda yakin dengan perubahan ini?\n1. Yakin\n2. Ulangi input 3. Tidak jadi input\n");
 		inputAngka(&yakin,1,3);
 		switch (yakin){
-			case 1: encrypt(temp_website,password);
+			case 1: if (!strcmp(*head_slave->username,"!@#$%^&*()")){ //jika pertama kali punya akun
+				ptr = *head_slave; //maka head nya yg diedit
+			}else{ //jika 
+				ptr = malloc(sizeof(struct SlaveAccount));
+				ptr->next = *head_slave; //maka ptr menjadi data yang pertama
+				*head_slave = ptr;
+			}
+							encrypt(temp_website,password);
 							encrypt(temp_email,password);
 							encrypt(temp_password,password);
 
@@ -203,7 +209,7 @@ void Login_Success(struct MasterAccount *head, unsigned char *password){
 		printf("Menu\n1. Tambah akun\n2. Cari akun\n3. Delete akun\n4. Logout");
 		inputAngka(&pilihan, 1,4);
 		switch (pilihan){
-			case 1: Add_Slave(head->slave,password);
+			case 1: Add_Slave(&head->slave,password);
 							break;
 			case 2: Cari_Slave(head->slave,password);
 							break;
@@ -242,7 +248,7 @@ void Login(struct MasterAccount *head) {
 		free(temp_email);
 
 		while(ptr != NULL){
-			if (!strcmp_MD5(ptr->md5_auth,temp_md5)){
+			if (!strcmp(ptr->md5_auth,temp_md5)){
 				authenticated = true;
 				printf("Telah berhasil login!");
 				Login_Success(ptr, temp_password);
@@ -255,6 +261,7 @@ void Login(struct MasterAccount *head) {
 			printf("Email dan password salah!\n1. Input ulang email dan password\n2. Exit\n");
 			inputAngka(&exit, 1, 2);
 		}
+		
 		free(temp_password);
 		free(temp_md5);
 	} while (!authenticated && exit == 1);
@@ -262,8 +269,10 @@ void Login(struct MasterAccount *head) {
 
 int main(void) {
 	struct MasterAccount *head = malloc(sizeof(struct MasterAccount));
+	strcpy(head->username,"!@#$%^&*()");
 	head->next = NULL;
 	head->slave = malloc(sizeof(struct SlaveAccount));
+	strcpy(head->slave->website,"!@#$%^&*()");
 	head->slave ->next = NULL;
 
 	int menu;

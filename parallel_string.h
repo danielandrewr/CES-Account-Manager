@@ -27,11 +27,12 @@ void strcat(unsigned char *destination, unsigned char *source){
 	destination[size_keduanya + 1] = '\0';
 }
 
-int strcmp_MD5(const unsigned char *str1,const  unsigned char *str2){
+int strcmp(const unsigned char *str1,const  unsigned char *str2){
 	register int i,flag = 1;
+	register int len_str1 = strlen(str1);
 	
 	//#pragma omp parallel for shared(flag)
-	for(i = 0; i<16; i++){ //16 khusus untuk MD5
+	for(i = 0; i<len_str1; i++){ 
 		if(str1[i] != str2[i]){
 			flag = 0;
 		}
