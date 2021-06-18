@@ -159,7 +159,7 @@ int main(void) {
 		inputAngka(&menu,1,2);
 		switch (menu){
 			case 1: Registrasi(head);
-				
+
 				break;
 			case 2: //Login(head);
 				break;

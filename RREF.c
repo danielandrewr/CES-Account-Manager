@@ -1,3 +1,5 @@
+//ide awal dan akan diabandon nanti
+
 /*#include <stdio.h>
 #include <stdlib.h>
 
