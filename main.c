@@ -123,9 +123,12 @@ void Add_Slave(struct SlaveAccount *head_slave, unsigned char *password){
 		printf("Password baru: ");
 		inputString(temp_password,USERNAME_MIN,USERNAME_MAX);
 
-		printf("Apakah anda yakin dengan perubahan ini?\n1. Yakin\n2. Ulangi input\n");
-		inputAngka(&yakin,1,2)
-	}
+		printf("Apakah anda yakin dengan perubahan ini?\n1. Yakin\n2. Ulangi input 3. Tidak jadi input\n");
+		inputAngka(&yakin,1,3);
+		switch (yakin){
+			case 1: 
+		}
+	} while(yakin != 1);
 	
 
 	

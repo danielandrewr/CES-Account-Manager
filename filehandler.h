@@ -54,13 +54,13 @@ void createFileWithMasterAccount(FILE *fptr, struct MasterAccount *head, char fi
 					fprintf("%s\n", head->username);
 					fprintf("%s\n", head->md5_auth);
 
-						while (data->next != NULL) {
+						while (data->slave != NULL) {
 							fprintf("%s\n", data->slave->website);
 							fprintf("%s\n", data->slave->email);
 							fprintf("%s\n", data->slave->password);
-							data = data->slave->next;
+							data = data->slave;
 						}
-						
+
 					fprintf("***\n");
 					head = head->next;
 					}
