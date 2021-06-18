@@ -137,14 +137,12 @@ void Add_Slave(struct SlaveAccount *head_slave, unsigned char *password){
 							break;
 			case 2: break;
 			default: break;
-
 		}
+		free(temp_website);
+		free(temp_email);
+		free(temp_password);
 	} while(yakin == 2);
-
-	free(temp_website);
-	free(temp_email);
-	free(temp_password);
-	ptr = NULL;
+	
 
 }
 void Cari_Slave(struct SlaveAccount *head, unsigned char *password){
