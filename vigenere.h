@@ -1,5 +1,4 @@
-#include <string.h>
-int mod(int a,int b){ //function for modulo, since C can't moduled negative numbers
+int mod(register int a,register int b){ //function for modulo, since C can't moduled negative numbers
 	if (a<0){
 		return special(a+b,b);
 	}
@@ -7,7 +6,7 @@ int mod(int a,int b){ //function for modulo, since C can't moduled negative numb
 		return a%b;
 	}
 }
-int special(int a, int b){ //function for negative numbers of modulo, recursively
+int special(register int a, register int b){ //function for negative numbers of modulo, recursively
 	if(a>=0){
 		return a;
 	}
