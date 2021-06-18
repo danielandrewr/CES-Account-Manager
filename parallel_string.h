@@ -31,9 +31,12 @@ int strcmp_MD5(unsigned char *str1, unsigned char *str2){
 	register int i,flag = 1;
 	
 	//#pragma omp parallel for shared(flag)
-	for(i = 0; flag && i<16; i++){ //16 khusus untuk MD5
+	for(i = 0; i<16; i++){ //16 khusus untuk MD5
 		if(str1[i] != str2[i]){
 			flag = 0;
+		}
+		if(!flag){
+			break;
 		}
 	}
 	return !flag;

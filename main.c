@@ -55,7 +55,7 @@ void inputString(unsigned char * string, const unsigned int batas_bawah, const u
   unsigned short int i, count = 0;
   unsigned char *input = malloc(256*sizeof(unsigned char));
   do {
-    scanf(" %255[^\n]s", & input);
+    scanf(" %255[^\n]s", &input);
 		fflush(stdin);
 		//ntar pakein pragma omp for reduction bisa ga ni
     for (i = 0; input[i] != '\0'; ++i) {
