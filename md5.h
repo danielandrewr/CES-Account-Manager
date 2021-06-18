@@ -36,7 +36,7 @@ void to_bytes(unsigned int val, unsigned char *bytes)
     bytes[3] = (unsigned char) (val >> 24);
 }
  
-unsigned int to_unsigned char(const unsigned char *bytes)
+unsigned int to_unsignedchar(const unsigned char *bytes)
 {
     return (unsigned int) bytes[0]
         | ((unsigned int) bytes[1] << 8)

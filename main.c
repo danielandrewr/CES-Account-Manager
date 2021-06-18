@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include "md5.h"
 #include "parallel_string.h"
+#include "vigenere.h"
 #define fileName "account.txt"
 
 #define USERNAME_MIN 5
@@ -63,7 +64,7 @@ void inputString(unsigned char * string, const unsigned int batas_bawah, const u
 		}else if (count > batas_atas){
 			printf("Input yang diberikan maksimal %d karakter. Silakan input lagi\n\n", batas_atas);
 		}else{
-			strcpy(string,input);
+			my_strcpy(string,input);
 		}
   } while (count < batas_bawah || count > batas_atas);
 	free(input);
@@ -80,9 +81,9 @@ void Registrasi(struct MasterAccount *head){
 		printf("\nMasukkan username akun master: ");
 		inputString(ptr->username,USERNAME_MIN,USERNAME_MAX); // username length minimal 5, max 50
 		printf("Masukkan email akun master: ");
-		inputString(&temp_email,EMAIL_MIN,EMAIL_MAX); // email length minimal 10, max 254
+		inputString(temp_email,EMAIL_MIN,EMAIL_MAX); // email length minimal 10, max 254
 		printf("Masukkan password akun master: ");
-		inputString(&temp_password,PASSWORD_MIN,PASSWORD_MAX); //password length minimal 6, max 101
+		inputString(temp_password,PASSWORD_MIN,PASSWORD_MAX); //password length minimal 6, max 101
 
 		printf("Apakah anda yakin dengan data yang telah diinput? (1. Ya 2. Tidak)\n");
 		inputAngka(&yakin,1,2);
@@ -90,9 +91,9 @@ void Registrasi(struct MasterAccount *head){
 	}while (yakin == 2);
 	encrypt(ptr->username,temp_password); //enkripsi usernamenya
 
-	strcat(temp_email,temp_password);
+	my_strcat(temp_email,temp_password);
 	
-	md5(temp_email,strlen(temp_email)+strlen(temp_password),ptr->md5_auth);
+	md5(temp_email,my_strlen(temp_email)+my_strlen(temp_password),ptr->md5_auth);
 	
 
 
@@ -126,7 +127,7 @@ void Add_Slave(struct SlaveAccount **head_slave, unsigned char *password){
 		printf("Apakah anda yakin dengan perubahan ini?\n1. Yakin\n2. Ulangi input 3. Tidak jadi input\n");
 		inputAngka(&yakin,1,3);
 		switch (yakin){
-			case 1: if (!strcmp(*head_slave->username,"!@#$%^&*()")){ //jika pertama kali punya akun
+			case 1: if (!my_strcmp(*head_slave->website,"!@#$%^&*()")){ //jika pertama kali punya akun
 				ptr = *head_slave; //maka head nya yg diedit
 			}else{ //jika 
 				ptr = malloc(sizeof(struct SlaveAccount));
@@ -137,9 +138,9 @@ void Add_Slave(struct SlaveAccount **head_slave, unsigned char *password){
 							encrypt(temp_email,password);
 							encrypt(temp_password,password);
 
-							strcpy(ptr->website,temp_website);
-							strcpy(ptr->email,temp_email);
-							strcpy(ptr->password,temp_password);
+							my_strcpy(ptr->website,temp_website);
+							my_strcpy(ptr->email,temp_email);
+							my_strcpy(ptr->password,temp_password);
 							break;
 			case 2: break;
 			default: break;
@@ -154,7 +155,9 @@ void Add_Slave(struct SlaveAccount **head_slave, unsigned char *password){
 void Cari_Slave(struct SlaveAccount *head, unsigned char *password){
 	struct SlaveAccount *ptr = head;
 	unsigned char *pencarian = NULL;
-	unsigned char *temp_website = NULL;
+	unsigned char *decrypted_website = NULL;
+	unsigned char *decrypted_email = NULL;
+	unsigned char *decrypted_password = NULL;
 	bool printed = false;
 	int again;
 	
@@ -166,11 +169,11 @@ void Cari_Slave(struct SlaveAccount *head, unsigned char *password){
 		printf("Masukkan akun website yang ingin dicari: ");
 		inputString(pencarian,1,USERNAME_MAX);
 		while (ptr != NULL){
-			strcpy(decrypted_website,ptr->website);
+			my_strcpy(decrypted_website,ptr->website);
 			decrypt(decrypted_website,password);
-			if (!strcasestr(decrypted_website,pencarian)){
-				strcpy(decrypted_email,ptr->email);
-				strcpy(decrypted_password,ptr->password);
+			if (!my_strcasestr(decrypted_website,pencarian)){
+				my_strcpy(decrypted_email,ptr->email);
+				my_strcpy(decrypted_password,ptr->password);
 				
 				decrypt(decrypted_email,password);
 				decrypt(decrypted_password,password);
@@ -199,7 +202,7 @@ void Cari_Slave(struct SlaveAccount *head, unsigned char *password){
 }
 void Login_Success(struct MasterAccount *head, unsigned char *password){
 	unsigned char *decrypted_username = malloc(USERNAME_MAX*sizeof(unsigned char));
-	strcpy(decrypted_username, head->username);
+	my_strcpy(decrypted_username, head->username);
 	decrypt(decrypted_username, password);
 
 	int pilihan;
@@ -225,11 +228,11 @@ void Login(struct MasterAccount *head) {
 	bool authenticated = false;
 	int exit = 2;
 
-	struct MasterAccount *ptr = NULL:
+	struct MasterAccount *ptr = NULL;
 
 	unsigned char *temp_email = NULL;
 	unsigned char *temp_password = NULL;
-	unsigned char *temp_md5 = NULL:
+	unsigned char *temp_md5 = NULL;
 
 	do {
 		ptr = head;
@@ -242,13 +245,13 @@ void Login(struct MasterAccount *head) {
 		printf("\n\nMasukkan password\t: ");
 		inputString(temp_password,PASSWORD_MIN,PASSWORD_MAX);
 		
-		strcat(temp_email,temp_password);
+		my_strcat(temp_email,temp_password);
 
-		md5(temp_email,strlen(temp_email)+strlen(temp_password),temp_md5);
+		md5(temp_email,my_strlen(temp_email)+my_strlen(temp_password),temp_md5);
 		free(temp_email);
 
 		while(ptr != NULL){
-			if (!strcmp(ptr->md5_auth,temp_md5)){
+			if (!my_strcmp(ptr->md5_auth,temp_md5)){
 				authenticated = true;
 				printf("Telah berhasil login!");
 				Login_Success(ptr, temp_password);
@@ -269,15 +272,15 @@ void Login(struct MasterAccount *head) {
 
 int main(void) {
 	struct MasterAccount *head = malloc(sizeof(struct MasterAccount));
-	strcpy(head->username,"!@#$%^&*()");
+	my_strcpy(head->username,"!@#$%^&*()");
 	head->next = NULL;
 	head->slave = malloc(sizeof(struct SlaveAccount));
-	strcpy(head->slave->website,"!@#$%^&*()");
+	my_strcpy(head->slave->website,"!@#$%^&*()");
 	head->slave ->next = NULL;
 
 	int menu;
 	printf("Selamat datang di Proglan Account Manager!\n");
-  	printf("Silahkan pilih salah satu menu\n")
+  printf("Silahkan pilih salah satu menu\n");
 	do{
 		printf("Menu\n1. Register\n2. Login\n3. Exit\n");
 		printf("Masukkan pilihan: ");
