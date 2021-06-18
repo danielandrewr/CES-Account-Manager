@@ -207,6 +207,8 @@ void Login_Success(struct MasterAccount *head, unsigned char *password){
 							break;
 			case 2: Cari_Slave(head->slave,password);
 							break;
+			case 3: Delete_Slave(head,password);
+							break;
 
 		}
 	}while (pilihan != 4);
