@@ -33,12 +33,15 @@ struct MasterAccount {
 void Registrasi(struct MasterAccount **head){
 	unsigned char *temp_email = NULL;
 	unsigned char *temp_password = NULL;
+	unsigned char *temp_username = NULL;
 	int yakin;
 	struct MasterAccount *ptr = NULL;
 	
 	do{
-		temp_email = malloc(355*sizeof(unsigned char));
-		temp_password = malloc(101*sizeof(unsigned char));
+		temp_email = malloc((EMAIL_MAX+PASSWORD_MAX)*sizeof(unsigned char));
+		temp_password = malloc(PASSWORD_MAX*sizeof(unsigned char));
+		temp_username = malloc(USERNAME_MAX*sizeof(unsigned char));
+		ptr = malloc(sizeof(struct MasterAccount));
 
 		printf("\nMasukkan username akun master: ");
 		inputString(ptr->username,USERNAME_MIN,USERNAME_MAX); // username length minimal 5, max 50
@@ -50,7 +53,7 @@ void Registrasi(struct MasterAccount **head){
 		printf("Apakah anda yakin dengan data yang telah diinput? (1. Ya 2. Ulangi 3. Tidak jadi registrasi)\n");
 		inputAngka(&yakin,1,3);
 		switch (yakin){
-			case 1: ptr = malloc(sizeof(struct MasterAccount));
+			case 1: 
 					encrypt(ptr->username,temp_password); //enkripsi usernamenya
 
 					my_strcat(temp_email,temp_password); //konkatenasi email dan password
@@ -126,7 +129,9 @@ void Add_Slave(struct SlaveAccount **head_slave, const unsigned char *password){
 }
 bool Cari_Slave(struct SlaveAccount *head_slave, const unsigned char *password){
 	if (head_slave == NULL){
-		printf("Tidak ada akun. Silakan tambahkan akun terlebih dahulu!\n");
+		printf("\nTidak ada akun. Silakan tambahkan akun terlebih dahulu!\n");
+		printf("Tekan ENTER untuk kembali\n");
+		getchar();
 		return true;
 	}
 	struct SlaveAccount *ptr = head_slave;
@@ -173,14 +178,16 @@ bool Cari_Slave(struct SlaveAccount *head_slave, const unsigned char *password){
 		free(decrypted_email);
 		free(decrypted_password);
 		free(pencarian);
-	}while(again != 1);	
+	}while(again == 1);	
 	ptr = NULL;	
 
 	return false;
 }
 bool Delete_Slave(struct SlaveAccount **head_slave, const unsigned char *password){
 	if (head_slave == NULL){
-		printf("Tidak ada akun. Silakan tambahkan akun terlebih dahulu!\n");
+		printf("\nTidak ada akun. Silakan tambahkan akun terlebih dahulu!\n");
+		printf("Tekan ENTER untuk kembali\n");
+		getchar();
 		return true;
 	}
 	struct SlaveAccount *ptr = NULL, *prev = NULL;
@@ -189,34 +196,35 @@ bool Delete_Slave(struct SlaveAccount **head_slave, const unsigned char *passwor
 	int again;
 
 	do{
-		ptr = *head;
 		decrypted_website = malloc(USERNAME_MAX*sizeof(unsigned char));
-		temp_pencarian = malloc(USERNAME_MAX*sizeof(unsigned char));
+		pencarian = malloc(USERNAME_MAX*sizeof(unsigned char));
 		printf("Masukkan nama website dari akun yang ingin dihapus\n");
-		inputString(temp_pencarian,1,USERNAME_MAX);
+		inputString(pencarian,1,USERNAME_MAX);
 		
-		for(ptr = *head, ptr != NULL; prev = ptr, ptr = ptr->next){
+		for(ptr = *head_slave; ptr != NULL; prev = ptr, ptr = ptr->next){
 			my_strcpy(decrypted_website,ptr->website);
 			decrypt(decrypted_website,password);
 			if(!my_strcasestr(decrypted_website, pencarian)){
-				if(!my_strcmp(ptr->website,(**head).website)){
-					*head = ptr->next;
+				if(!my_strcmp(ptr->website,(**head_slave).website)){
+					*head_slave = ptr->next;
 				}else if(ptr->next == NULL){
 					prev->next = NULL;
 				}else{
 					prev->next = ptr->next;
 				}
 				free(ptr);
-				printf("\nAkun website %s telah terhapus!\n");
-				printf("\033[0;0H\033[2J"); //clear console di repl
+				printf("\nAkun website %s telah terhapus!\n", decrypted_website);
+				printf("Tekan ENTER untuk kembali\n");
+				getchar();
 				break; 
+			}
 		}
 	
-		if (ptr != NULL){
-			printf("Tidak ada website dengan dengan nama \"%s\" pada akun. Silakan coba lagi!",pencarian);
+		if (ptr == NULL){
+			printf("Tidak ada website dengan dengan nama \"%s\" pada akun. Silakan coba lagi!\n\n",pencarian);
 		}
 		
-		printf("Ingin menghapus akun lagi? (1. Ya 2. Tidak\n");
+		printf("Ingin menghapus akun lagi? (1. Ya 2. Tidak)\n");
 		inputAngka(&again,1,2);
 	}while(again == 1);
 
@@ -230,6 +238,8 @@ bool Delete_Slave(struct SlaveAccount **head_slave, const unsigned char *passwor
 bool Show_All_Slave(struct SlaveAccount *head_slave, const unsigned char *password){
 	if (head_slave == NULL){
 		printf("Tidak ada akun. Silakan tambahkan akun terlebih dahulu!\n");
+		printf("Tekan ENTER untuk kembali\n");
+		getchar();
 		return true;
 	}
 	struct SlaveAccount *ptr = NULL;
@@ -237,10 +247,10 @@ bool Show_All_Slave(struct SlaveAccount *head_slave, const unsigned char *passwo
 	unsigned char *decrypted_email = malloc(USERNAME_MAX*sizeof(unsigned char));
 	unsigned char *decrypted_password = malloc(USERNAME_MAX*sizeof(unsigned char));
 
-	for (ptr = head_slave; ptr != NULL; ptr = ptr->link){
-		strcpy(decrypted_website,ptr->website);
-		strcpy(decrypted_email,ptr->email);
-		strcpy(decrypted_password,ptr->password);
+	for (ptr = head_slave; ptr != NULL; ptr = ptr->next){
+		my_strcpy(decrypted_website,ptr->website);
+		my_strcpy(decrypted_email,ptr->email);
+		my_strcpy(decrypted_password,ptr->password);
 
 		decrypt(decrypted_website,password);
 		decrypt(decrypted_email,password);
@@ -268,6 +278,7 @@ void Login_Success(struct MasterAccount *head, unsigned char *password){
 	int pilihan;
 
 	do{
+		printf("\033[0;0H\033[2J"); //clear console replit
 		printf("Selamat datang, %s!\n",decrypted_username);
 		printf("Menu\n1. Lampirkan semua akun\n2. Tambah akun\n3. Cari akun\n4. Delete akun\n5. Delete akun master\n6. Logout");
 		inputAngka(&pilihan, 1,4);
@@ -284,14 +295,16 @@ void Login_Success(struct MasterAccount *head, unsigned char *password){
 					break;
 
 		}
-		printf("\033[0;0H\033[2J"); //clear console replit
-	}while (pilihan != 4);
+		 
+	}while (pilihan != 6);
 	free(decrypted_username);
 }
 
 bool Login(struct MasterAccount *head) {
 	if (head == NULL){
 		printf("Database kosong! Silakan registrasi terlebih dahulu!\n");
+		printf("Tekan ENTER untuk kembali\n");
+		getchar();
 		return true;
 	}
 	bool authenticated = false;
@@ -319,17 +332,16 @@ bool Login(struct MasterAccount *head) {
 		md5(temp_email,my_strlen(temp_email)+my_strlen(temp_password),temp_md5);
 		free(temp_email);
 
-		while(ptr != NULL){
+		for (ptr = head; ptr != NULL; ptr = ptr->next){
 			if (!my_strcmp(ptr->md5_auth,temp_md5)){
 				authenticated = true;
 				printf("Telah berhasil login!");
 				Login_Success(ptr, temp_password);
 				break;
-			}else{
-				ptr = ptr->next;
 			}
 		}
-		if (ptr!= NULL){
+
+		if (ptr == NULL && !authenticated){
 			printf("Email dan password salah!\n1. Input ulang email dan password\n2. Exit\n");
 			inputAngka(&exit, 1, 2);
 		}
@@ -345,23 +357,25 @@ int main(void) {
 	struct MasterAccount *head = NULL;
 	int menu;
 
-	printf("Selamat datang di Proglan Account Manager!\n");
-  printf("Silahkan pilih salah satu menu\n");
+	
 	do{
+		printf("Selamat datang di Proglan Account Manager!\n");
+ 		printf("Silahkan pilih salah satu menu\n");
 		printf("Menu\n1. Register\n2. Login\n3. Exit\n");
 		printf("Masukkan pilihan: ");
-		inputAngka(&menu,1,2);
+		inputAngka(&menu,1,3);
 		switch (menu){
 			case 1: Registrasi(&head);
 				break;
-			case 2: //Login(head);
+			case 2: Login(head);
 				break;
       		case 3:
 				printf("Terima kasih karena telah menggunakan aplikasi Account Manager!");
 				break;
 				default: 
       			break;
-		}		
+		}
+		printf("\033[0;0H\033[2J"); //clear console replit		
 	} while ((menu >= 1) && (menu <= 2));
 	return 0;
 }
