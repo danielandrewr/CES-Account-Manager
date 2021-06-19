@@ -71,7 +71,7 @@ void md5(const unsigned char *initial_msg, size_t initial_len, unsigned char *di
         ;
  
     msg = (unsigned char*)malloc(new_len + 8);
-    strcpy(msg, initial_msg);
+    my_strcpy(msg, initial_msg);
     msg[initial_len] = 0x80; // append the "1" bit; most significant bit is "first"
     for (offset = initial_len + 1; offset < new_len; offset++)
         msg[offset] = 0; // append "0" bits

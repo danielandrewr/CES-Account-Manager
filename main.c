@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "md5.h"
 #include "parallel_string.h"
+#include "md5.h"
+
 #include "vigenere.h"
 #define fileName "account.txt"
 
@@ -69,14 +70,12 @@ void inputString(unsigned char * string, const unsigned int batas_bawah, const u
   } while (count < batas_bawah || count > batas_atas);
 	free(input);
 }
-void Registrasi(struct MasterAccount *head){
+void Registrasi(struct MasterAccount **head){
 	unsigned char *temp_email = malloc(355*sizeof(unsigned char));
 	unsigned char *temp_password = malloc(101*sizeof(unsigned char));
 	int yakin;
-	struct MasterAccount *ptr = head;
-	while (ptr->next != NULL){
-		ptr = ptr->next;
-	}
+	struct MasterAccount *ptr = NULL;
+	
 	do{
 		printf("\nMasukkan username akun master: ");
 		inputString(ptr->username,USERNAME_MIN,USERNAME_MAX); // username length minimal 5, max 50
@@ -89,6 +88,15 @@ void Registrasi(struct MasterAccount *head){
 		inputAngka(&yakin,1,2);
 		printf("\033[0;0H\033[2J"); //clear console di repl
 	}while (yakin == 2);
+
+	if (!strcmp((**head).username,"!@#$%^&*()"){ //jika barusan mengisi
+		ptr = *head; //ptr adalah head nya
+		ptr->next = NULL;
+	}else{ //jika database ada
+		ptr = malloc(sizeof(struct MasterAccount)); //maka ptr menjadi data pertama
+		ptr->next = *head;
+		*head = ptr; //head nya berubah menjadi data yang barusan dimasukkan
+	}
 	encrypt(ptr->username,temp_password); //enkripsi usernamenya
 
 	my_strcat(temp_email,temp_password);
@@ -128,7 +136,8 @@ void Add_Slave(struct SlaveAccount **head_slave, unsigned char *password){
 		inputAngka(&yakin,1,3);
 		switch (yakin){
 			case 1: if (!my_strcmp((**head_slave).website,"!@#$%^&*()")){ //jika pertama kali punya akun
-				ptr = *head_slave; //maka head nya yg diedit
+				ptr = *head_slave;
+				ptr -> next = NULL; //maka head nya yg diedit
 			}else{ //jika sudah ada database
 				ptr = malloc(sizeof(struct SlaveAccount));
 				ptr->next = *head_slave; //maka ptr menjadi data yang pertama
@@ -287,7 +296,7 @@ int main(void) {
 		printf("Masukkan pilihan: ");
 		inputAngka(&menu,1,2);
 		switch (menu){
-			case 1: Registrasi(head);
+			case 1: Registrasi(&head);
 				break;
 			case 2: //Login(head);
 				break;
