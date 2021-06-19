@@ -50,7 +50,7 @@ void Registrasi(struct MasterAccount **head){
 		printf("\033[0;0H\033[2J"); //clear console di repl
 	}while (yakin == 2);
 
-	if (!strcmp((**head).username,GARBAGE_STRING){ //jika barusan mengisi
+	if (!my_strcmp((**head).username,GARBAGE_STRING)){ //jika barusan mengisi
 		ptr = *head; //ptr adalah head nya
 		ptr->next = NULL;
 	}else{ //jika database ada
