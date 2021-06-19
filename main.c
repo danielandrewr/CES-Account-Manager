@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include "parallel_string.h"
 #include "md5.h"
-
+#include "get_input.h"
 #include "encipher.h"
 #define fileName "account.txt"
 
@@ -14,6 +14,8 @@
 #define PASSWORD_MIN 6
 #define PASSWORD_MAX 100
 #define MD5_SIZE 16
+
+const unsigned char GARBAGE_STRING[] = "!@#$%^&*()";
 
 struct SlaveAccount{
 	unsigned char website[USERNAME_MAX];
@@ -48,7 +50,7 @@ void Registrasi(struct MasterAccount **head){
 		printf("\033[0;0H\033[2J"); //clear console di repl
 	}while (yakin == 2);
 
-	if (!strcmp((**head).username,"!@#$%^&*()"){ //jika barusan mengisi
+	if (!strcmp((**head).username,GARBAGE_STRING){ //jika barusan mengisi
 		ptr = *head; //ptr adalah head nya
 		ptr->next = NULL;
 	}else{ //jika database ada
@@ -94,7 +96,7 @@ void Add_Slave(struct SlaveAccount **head_slave, unsigned char *password){
 		printf("Apakah anda yakin dengan perubahan ini?\n1. Yakin\n2. Ulangi input 3. Tidak jadi input\n");
 		inputAngka(&yakin,1,3);
 		switch (yakin){
-			case 1: if (!my_strcmp((**head_slave).website,"!@#$%^&*()")){ //jika pertama kali punya akun
+			case 1: if (!my_strcmp((**head_slave).website,GARBAGE_STRING)){ //jika pertama kali punya akun
 				ptr = *head_slave;
 				ptr -> next = NULL; //maka head nya yg diedit
 			}else{ //jika sudah ada database
@@ -241,10 +243,10 @@ void Login(struct MasterAccount *head) {
 
 int main(void) {
 	struct MasterAccount *head = malloc(sizeof(struct MasterAccount));
-	my_strcpy(head->username,"!@#$%^&*()");
+	my_strcpy(head->username,GARBAGE_STRING);
 	head->next = NULL;
 	head->slave = malloc(sizeof(struct SlaveAccount));
-	my_strcpy(head->slave->website,"!@#$%^&*()");
+	my_strcpy(head->slave->website,GARBAGE_STRING);
 	head->slave ->next = NULL;
 
 	int menu;

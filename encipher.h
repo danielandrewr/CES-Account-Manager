@@ -1,5 +1,5 @@
 #include "subbytes.h"
-#include <string.h>
+
 int special(int a, int b){ //function for negative numbers of modulo, recursively
 	if(a>=0){
 		return a;
@@ -18,8 +18,8 @@ int mod(int a,int b){ //function for modulo, since C can't moduled negative numb
 }
 char encrypt(unsigned char *M, unsigned char *key){
 	int maksKey,maksM;
-	maksKey = strlen(key);
-	maksM = strlen(M);
+	maksKey = my_strlen(key);
+	maksM = my_strlen(M);
 	#pragma omp parallel shared(maksKey,maksM)
 	{
 		int from,to,i,j;
@@ -44,8 +44,8 @@ char encrypt(unsigned char *M, unsigned char *key){
 }
 char decrypt(unsigned char *M, unsigned char *key){
 	int maksKey,maksM;
-	maksKey = strlen(key);
-	maksM = strlen(M);
+	maksKey = my_strlen(key);
+	maksM = my_strlen(M);
 	#pragma omp parallel shared(maksKey,maksM,M,key)
 	{
 		int from,to,i,j;
