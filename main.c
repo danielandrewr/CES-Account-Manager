@@ -32,12 +32,15 @@ struct MasterAccount {
 
 
 void Registrasi(struct MasterAccount **head){
-	unsigned char *temp_email = malloc(355*sizeof(unsigned char));
-	unsigned char *temp_password = malloc(101*sizeof(unsigned char));
+	unsigned char *temp_email = NULL;
+	unsigned char *temp_password = NULL;
 	int yakin;
 	struct MasterAccount *ptr = NULL;
 	
 	do{
+		temp_email = malloc(355*sizeof(unsigned char));
+		temp_password = malloc(101*sizeof(unsigned char));
+
 		printf("\nMasukkan username akun master: ");
 		inputString(ptr->username,USERNAME_MIN,USERNAME_MAX); // username length minimal 5, max 50
 		printf("Masukkan email akun master: ");
@@ -45,30 +48,32 @@ void Registrasi(struct MasterAccount **head){
 		printf("Masukkan password akun master: ");
 		inputString(temp_password,PASSWORD_MIN,PASSWORD_MAX); //password length minimal 6, max 101
 
-		printf("Apakah anda yakin dengan data yang telah diinput? (1. Ya 2. Tidak)\n");
-		inputAngka(&yakin,1,2);
+		printf("Apakah anda yakin dengan data yang telah diinput? (1. Ya 2. Ulangi 3. Tidak jadi registrasi)\n");
+		inputAngka(&yakin,1,2,3);
+		switch (yakin){
+			case 1: if (!my_strcmp((**head).username,GARBAGE_STRING)){ //jika barusan mengisi
+									ptr = *head; //ptr adalah head nya
+									ptr->next = NULL;
+								}else{ //jika database ada
+									ptr = malloc(sizeof(struct MasterAccount)); //maka ptr menjadi data pertama
+									ptr->next = *head;
+									*head = ptr; //head nya berubah menjadi data yang barusan dimasukkan
+								}
+								encrypt(ptr->username,temp_password); //enkripsi usernamenya
+
+								my_strcat(temp_email,temp_password); //konkatenasi email dan password
+								
+								md5(temp_email,my_strlen(temp_email)+my_strlen(temp_password),ptr->md5_auth); //dijadikan MD5 authentication
+								break;
+			case 2: break;
+			default: break;
+		}
+		free(temp_email);
+		free(temp_password);
+		ptr = NULL;
+
 		printf("\033[0;0H\033[2J"); //clear console di repl
 	}while (yakin == 2);
-
-	if (!my_strcmp((**head).username,GARBAGE_STRING)){ //jika barusan mengisi
-		ptr = *head; //ptr adalah head nya
-		ptr->next = NULL;
-	}else{ //jika database ada
-		ptr = malloc(sizeof(struct MasterAccount)); //maka ptr menjadi data pertama
-		ptr->next = *head;
-		*head = ptr; //head nya berubah menjadi data yang barusan dimasukkan
-	}
-	encrypt(ptr->username,temp_password); //enkripsi usernamenya
-
-	my_strcat(temp_email,temp_password);
-	
-	md5(temp_email,my_strlen(temp_email)+my_strlen(temp_password),ptr->md5_auth);
-	
-
-
-	free(temp_email);
-	free(temp_password);
-	ptr = NULL;
 }
 void Add_Slave(struct SlaveAccount **head_slave, unsigned char *password){
 	struct SlaveAccount *ptr = NULL;
@@ -77,8 +82,6 @@ void Add_Slave(struct SlaveAccount **head_slave, unsigned char *password){
 	unsigned char *temp_website = NULL;
 	unsigned char *temp_email = NULL;
 	unsigned char *temp_password = NULL;
-
-	
 
 	do{
 		temp_website = malloc(USERNAME_MAX*sizeof(unsigned char));
@@ -123,8 +126,8 @@ void Add_Slave(struct SlaveAccount **head_slave, unsigned char *password){
 	ptr = NULL;
 
 }
-void Cari_Slave(struct SlaveAccount *head, unsigned char *password){
-	struct SlaveAccount *ptr = head;
+void Cari_Slave(struct SlaveAccount *head_slave, unsigned char *password){
+	struct SlaveAccount *ptr = head_slave;
 	unsigned char *pencarian = NULL;
 	unsigned char *decrypted_website = NULL;
 	unsigned char *decrypted_email = NULL;
@@ -171,6 +174,7 @@ void Cari_Slave(struct SlaveAccount *head, unsigned char *password){
 	}while(again != 1);	
 	ptr = NULL;	
 }
+void Delete_Slave(struct SlaveAccount **)
 void Login_Success(struct MasterAccount *head, unsigned char *password){
 	unsigned char *decrypted_username = malloc(USERNAME_MAX*sizeof(unsigned char));
 	my_strcpy(decrypted_username, head->username);
@@ -187,8 +191,9 @@ void Login_Success(struct MasterAccount *head, unsigned char *password){
 							break;
 			case 2: Cari_Slave(head->slave,password);
 							break;
-			case 3: Delete_Slave(head,password);
+			case 3: Delete_Slave(&head->slave,password);
 							break;
+			case 4:
 
 		}
 	}while (pilihan != 4);
@@ -249,7 +254,7 @@ int main(void) {
 	my_strcpy(head->slave->website,GARBAGE_STRING);
 	head->slave ->next = NULL;
 
-	int menu;
+	register int menu;
 	printf("Selamat datang di Proglan Account Manager!\n");
   printf("Silahkan pilih salah satu menu\n");
 	do{
