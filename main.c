@@ -183,7 +183,7 @@ bool Delete_Slave(struct SlaveAccount **head_slave, const unsigned char *passwor
 		printf("Tidak ada akun. Silakan tambahkan akun terlebih dahulu!\n");
 		return true;
 	}
-	struct SlaveAccount *ptr = NULL;
+	struct SlaveAccount *ptr = NULL, *prev = NULL;
 	unsigned char *decrypted_website = NULL;
 	unsigned char *pencarian = NULL;
 	int again;
@@ -194,24 +194,28 @@ bool Delete_Slave(struct SlaveAccount **head_slave, const unsigned char *passwor
 		temp_pencarian = malloc(USERNAME_MAX*sizeof(unsigned char));
 		printf("Masukkan nama website dari akun yang ingin dihapus\n");
 		inputString(temp_pencarian,1,USERNAME_MAX);
-
-		while(ptr != NULL){
+		
+		for(ptr = *head, ptr != NULL; prev = ptr, ptr = ptr->next){
 			my_strcpy(decrypted_website,ptr->website);
 			decrypt(decrypted_website,password);
 			if(!my_strcasestr(decrypted_website, pencarian)){
 				if(!my_strcmp(ptr->website,(**head).website)){
 					*head = ptr->next;
+				}else if(ptr->next == NULL){
+					prev->next = NULL;
+				}else{
+					prev->next = ptr->next;
 				}
+				free(ptr);
 				printf("\nAkun website %s telah terhapus!\n");
 				printf("\033[0;0H\033[2J"); //clear console di repl
 				break; 
-			}else{
-				ptr = ptr->next;
-			}
 		}
+	
 		if (ptr != NULL){
-			printf("Tidak ada website dengan dengan nama \"%s\" pada akun. Silakan coba lagi!");
+			printf("Tidak ada website dengan dengan nama \"%s\" pada akun. Silakan coba lagi!",pencarian);
 		}
+		
 		printf("Ingin menghapus akun lagi? (1. Ya 2. Tidak\n");
 		inputAngka(&again,1,2);
 	}while(again == 1);
@@ -219,6 +223,7 @@ bool Delete_Slave(struct SlaveAccount **head_slave, const unsigned char *passwor
 	free(decrypted_website);
 	free(pencarian);
 	ptr = NULL;
+	prev = NULL;
 
 	return false;
 }
