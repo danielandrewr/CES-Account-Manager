@@ -199,6 +199,9 @@ bool Delete_Slave(struct SlaveAccount **head_slave, const unsigned char *passwor
 			my_strcpy(decrypted_website,ptr->website);
 			decrypt(decrypted_website,password);
 			if(!my_strcasestr(decrypted_website, pencarian)){
+				if(!my_strcmp(ptr->website,(**head).website)){
+					*head = ptr->next;
+				}
 				printf("\nAkun website %s telah terhapus!\n");
 				printf("\033[0;0H\033[2J"); //clear console di repl
 				break; 
