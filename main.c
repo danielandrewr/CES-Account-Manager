@@ -284,6 +284,7 @@ void Login_Success(struct MasterAccount *head, unsigned char *password){
 					break;
 
 		}
+		printf("\033[0;0H\033[2J"); //clear console replit
 	}while (pilihan != 4);
 	free(decrypted_username);
 }

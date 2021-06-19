@@ -16,7 +16,7 @@ int mod(int a,int b){ //function for modulo, since C can't moduled negative numb
 		return a%b;
 	}
 }
-char encrypt(unsigned char *M, unsigned char *key){
+char encrypt(unsigned char *M, const unsigned char *key){
 	int maksKey,maksM;
 	maksKey = my_strlen(key);
 	maksM = my_strlen(M);
@@ -38,7 +38,7 @@ char encrypt(unsigned char *M, unsigned char *key){
 	}
 	return 0;
 }
-char decrypt(unsigned char *M, unsigned char *key){
+char decrypt(unsigned char *M, const unsigned char *key){
 	int maksKey,maksM;
 	maksKey = my_strlen(key);
 	maksM = my_strlen(M);
