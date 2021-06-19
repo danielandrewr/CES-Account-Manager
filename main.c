@@ -4,7 +4,7 @@
 #include "parallel_string.h"
 #include "md5.h"
 
-#include "vigenere.h"
+#include "encipher.h"
 #define fileName "account.txt"
 
 #define USERNAME_MIN 5
@@ -302,6 +302,7 @@ int main(void) {
 				break;
       		case 3:
 				printf("Terima kasih karena telah menggunakan aplikasi Account Manager!");
+				break;
 				default: 
       			break;
 		}		

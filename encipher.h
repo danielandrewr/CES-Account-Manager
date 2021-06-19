@@ -1,4 +1,5 @@
-#include "tessbox.h"
+#include "subbytes.h"
+#include <string.h>
 int special(int a, int b){ //function for negative numbers of modulo, recursively
 	if(a>=0){
 		return a;
@@ -15,7 +16,7 @@ int mod(int a,int b){ //function for modulo, since C can't moduled negative numb
 		return a%b;
 	}
 }
-char encrypt(unsigned char *M, unsigned char *key, int *flag){
+char encrypt(unsigned char *M, unsigned char *key){
 	int maksKey,maksM;
 	maksKey = strlen(key);
 	maksM = strlen(M);
@@ -30,7 +31,7 @@ char encrypt(unsigned char *M, unsigned char *key, int *flag){
 			{
 				for (j=from;j<=to;j++){
 					M[j]=mod((M[j]+key[j%maksKey]),256);
-					sbox(M[j]);
+					M[j]=sbox(M[j]);
 					if(M[j]<=31||M[j]==127){ //error handler for ascii code 0-31 (usually generate error)
 						flag[j]=1;
 						M[j]+=31;
@@ -41,7 +42,7 @@ char encrypt(unsigned char *M, unsigned char *key, int *flag){
 	}a
 	return 0;
 }
-char decrypt(unsigned char *M, unsigned char *key,int *flag){
+char decrypt(unsigned char *M, unsigned char *key){
 	int maksKey,maksM;
 	maksKey = strlen(key);
 	maksM = strlen(M);
@@ -59,7 +60,7 @@ char decrypt(unsigned char *M, unsigned char *key,int *flag){
 						flag[j]=0;
 						M[j]-=31;
 					}
-					rsbox(M[j]); //inverse subbox
+					M[j]=rsbox(M[j]); //inverse subbox
 					M[j]=mod((M[j]-key[j%maksKey]),256); //vigenere function
 				}
 			}
