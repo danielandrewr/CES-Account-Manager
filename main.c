@@ -127,9 +127,9 @@ void Add_Slave(struct SlaveAccount **head_slave, unsigned char *password){
 		printf("Apakah anda yakin dengan perubahan ini?\n1. Yakin\n2. Ulangi input 3. Tidak jadi input\n");
 		inputAngka(&yakin,1,3);
 		switch (yakin){
-			case 1: if (!my_strcmp(*head_slave->website,"!@#$%^&*()")){ //jika pertama kali punya akun
+			case 1: if (!my_strcmp((**head_slave).website,"!@#$%^&*()")){ //jika pertama kali punya akun
 				ptr = *head_slave; //maka head nya yg diedit
-			}else{ //jika 
+			}else{ //jika sudah ada database
 				ptr = malloc(sizeof(struct SlaveAccount));
 				ptr->next = *head_slave; //maka ptr menjadi data yang pertama
 				*head_slave = ptr;
@@ -150,6 +150,7 @@ void Add_Slave(struct SlaveAccount **head_slave, unsigned char *password){
 		free(temp_password);
 	} while(yakin == 2);
 	
+	ptr = NULL;
 
 }
 void Cari_Slave(struct SlaveAccount *head, unsigned char *password){
