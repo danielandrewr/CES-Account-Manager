@@ -256,9 +256,9 @@ bool Show_All_Slave(struct SlaveAccount *head_slave, const unsigned char *passwo
 		decrypt(decrypted_email,password);
 		decrypt(decrypted_password,password);
 
-		printf("Website: %s\n",decrypted_website);
+		printf("\nWebsite: %s\n",decrypted_website);
 		printf("Email: %s\n",decrypted_email);
-		printf("Password: %s\n",decrypted_password);
+		printf("Password: %s\n\n",decrypted_password);
 	}
 	free(decrypted_website);
 	free(decrypted_email);
@@ -270,17 +270,39 @@ bool Show_All_Slave(struct SlaveAccount *head_slave, const unsigned char *passwo
 
 	return false;
 }
-void Login_Success(struct MasterAccount *head, unsigned char *password){
+bool Delete_Account(struct SlaveAccount *head){
+	int yakin;
+	struct SlaveAccount *ptr = NULL;
+
+	printf("Apakah anda yakin untuk menghapus akun master seluruhnya?\n1. Yakin\n2. Tidak jadi\n");
+	printf("Masukkan pilihan: ");
+	inputAngka(&yakin,1,2);
+	if(yakin == 1){
+		for(ptr = head; ptr != NULL; head = ptr){
+			ptr = ptr->next;
+			free(head);
+		}
+		printf("Akun telah terhapus!\n");
+		printf("Tekan ENTER untuk kembali\n");
+		getchar();
+		return true;
+	}else{
+		return false;
+	}
+}
+bool Login_Success(struct MasterAccount *head, unsigned char *password){
 	unsigned char *decrypted_username = malloc(USERNAME_MAX*sizeof(unsigned char));
 	my_strcpy(decrypted_username, head->username);
 	decrypt(decrypted_username, password);
+	bool deleted = false;
 
 	int pilihan;
 
 	do{
 		printf("\033[0;0H\033[2J"); //clear console replit
 		printf("Selamat datang, %s!\n",decrypted_username);
-		printf("Menu\n1. Lampirkan semua akun\n2. Tambah akun\n3. Cari akun\n4. Delete akun\n5. Delete akun master\n6. Logout");
+		printf("Menu\n1. Lampirkan semua akun\n2. Tambah akun\n3. Cari akun\n4. Delete akun\n5. Delete akun master\n6. Logout\n");
+		printf("Masukkan pilihan: ");
 		inputAngka(&pilihan, 1,4);
 		switch (pilihan){
 			case 1: Show_All_Slave(head->slave,password);
@@ -291,16 +313,18 @@ void Login_Success(struct MasterAccount *head, unsigned char *password){
 					break;
 			case 4: Delete_Slave(&head->slave,password);
 					break;
-			case 5:
+			case 5: deleted = Delete_Account(head->slave);
 					break;
 
 		}
 		 
 	}while (pilihan != 6);
 	free(decrypted_username);
+	
+	return deleted;
 }
 
-bool Login(struct MasterAccount *head) {
+bool Login(struct MasterAccount **head) {
 	if (head == NULL){
 		printf("Database kosong! Silakan registrasi terlebih dahulu!\n");
 		printf("Tekan ENTER untuk kembali\n");
@@ -310,14 +334,13 @@ bool Login(struct MasterAccount *head) {
 	bool authenticated = false;
 	int exit = 2;
 
-	struct MasterAccount *ptr = NULL;
+	struct MasterAccount *ptr = NULL, *prev = NULL;
 
 	unsigned char *temp_email = NULL;
 	unsigned char *temp_password = NULL;
 	unsigned char *temp_md5 = NULL;
 
 	do {
-		ptr = head;
 		temp_email = malloc(355*sizeof(unsigned char));
 		temp_password = malloc(101*sizeof(unsigned char));
 		temp_md5 = malloc(16*sizeof(unsigned char));
@@ -332,11 +355,20 @@ bool Login(struct MasterAccount *head) {
 		md5(temp_email,my_strlen(temp_email)+my_strlen(temp_password),temp_md5);
 		free(temp_email);
 
-		for (ptr = head; ptr != NULL; ptr = ptr->next){
+		for (ptr = *head; ptr != NULL; prev = ptr, ptr = ptr->next){
 			if (!my_strcmp(ptr->md5_auth,temp_md5)){
 				authenticated = true;
 				printf("Telah berhasil login!");
-				Login_Success(ptr, temp_password);
+				if(Login_Success(ptr, temp_password)){ //jika delete akun
+					if(ptr == *head){
+						*head = ptr->next;
+					}else if(ptr->next == NULL){
+						prev->next = NULL;
+					}else{
+						prev->next = ptr->next;
+					}
+					free(ptr);
+				}
 				break;
 			}
 		}
@@ -348,6 +380,7 @@ bool Login(struct MasterAccount *head) {
 		
 		free(temp_password);
 		free(temp_md5);
+		ptr = NULL;
 	} while (!authenticated && exit == 1);
 
 	return false;
@@ -367,10 +400,12 @@ int main(void) {
 		switch (menu){
 			case 1: Registrasi(&head);
 				break;
-			case 2: Login(head);
+			case 2: Login(&head);
 				break;
       		case 3:
 				printf("Terima kasih karena telah menggunakan aplikasi Account Manager!");
+				printf("Tekan ENTER untuk kembali\n");
+				getchar();
 				break;
 				default: 
       			break;
