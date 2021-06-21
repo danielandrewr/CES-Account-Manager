@@ -133,8 +133,10 @@ void Add_Slave(struct SlaveAccount **head_slave, const unsigned char *password){
 }
 bool Cari_Slave(struct SlaveAccount *head_slave, const unsigned char *password){  //function untuk mencari akun slave
 	if (head_slave == NULL){
+    printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 		printf("\nTidak ada akun. Silakan tambahkan akun terlebih dahulu!\n");
 		printf("Tekan ENTER untuk kembali\n");
+    printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 		getchar();
 		return true;
 	}
@@ -189,8 +191,10 @@ bool Cari_Slave(struct SlaveAccount *head_slave, const unsigned char *password){
 }
 bool Delete_Slave(struct SlaveAccount **head_slave, const unsigned char *password){ ///function untuk menghapus akun slave berdasarkan yang dipilih
 	if (head_slave == NULL){
+    printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 		printf("\nTidak ada akun. Silakan tambahkan akun terlebih dahulu!\n");
 		printf("Tekan ENTER untuk kembali\n");
+    printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 		getchar();
 		return true;
 	}
@@ -217,8 +221,10 @@ bool Delete_Slave(struct SlaveAccount **head_slave, const unsigned char *passwor
 					prev->next = ptr->next;
 				}
 				free(ptr);
+        printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 				printf("\nAkun website %s telah terhapus!\n", decrypted_website);
 				printf("Tekan ENTER untuk kembali\n");
+        printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 				getchar();
 				break; 
 			}
@@ -228,7 +234,9 @@ bool Delete_Slave(struct SlaveAccount **head_slave, const unsigned char *passwor
 			printf("Tidak ada website dengan dengan nama \"%s\" pada akun. Silakan coba lagi!\n\n",pencarian);
 		}
 		
+    printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 		printf("Ingin menghapus akun lagi? (1. Ya 2. Tidak)\n");
+    printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 		inputAngka(&again,1,2);
 	}while(again == 1);
 
