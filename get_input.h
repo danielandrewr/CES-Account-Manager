@@ -24,11 +24,9 @@ void inputString(unsigned char * string, const unsigned int batas_bawah, const u
   unsigned char *input = malloc(256*sizeof(unsigned char));
   do {
     scanf(" %255[^\n]hhu", input);
-		fflush(stdin);
-		//ntar pakein pragma omp for reduction bisa ga ni
-    for (i = 0; input[i] != '\0'; ++i) {
-      count++;
-    }
+	fflush(stdin);
+	//ntar pakein pragma omp for reduction bisa ga ni
+    count = my_strlen(input);
     if (count < batas_bawah){
 			printf("Input yang diberikan minimal %d karakter. Silakan input lagi\n\n", batas_bawah);
 		}else if (count > batas_atas){
