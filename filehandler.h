@@ -14,30 +14,6 @@ bool ifFileNotNull(FILE *fptr, char fileName[50]) {
 	return fileNotNull;
 }
 
-// void createFileWithMasterAccount(FILE *fptr, char fileName[50], struct MasterAccount *head) {
-//     struct MasterAccount *data;
-// 	fptr = fopen("account.txt", "w");
-// 	if (fptr != NULL) {
-// 		if (ifFileNotNull(fptr, fileName)) {
-// 			do{
-// 				fprintf("%s\n", data->username);//masukin username master
-// 				fprintf("%s\n", data->md5_auth);//md5 authorization
-// 				do {
-// 					fprintf("%s\n", data->slave->website);//masukin website
-// 					fprintf("%s\n", data->slave->email);//masukin email
-// 					fprintf("%s\n", data->slave->password);//masukin password
-// 					data->slave = data->slave->next;
-// 				} while(data != NULL);
-//         	fprintf("***\n");//penanda slave terakhir
-//         	data = data->next;//nextnya dipindah dulu ke data, nah berarti yang perlu dicek apakah datanya kosong ato ngga
-// 			} while (data != NULL);
-// 			printf("File %s berhasil dibuat!\n", fileName);
-// 		} else printf("Ups, something went wrong");
-// 	} else printf("Ups, something went wrong!\n");
-
-// 	fclose(fptr); //wah ini pusing gw bacanya
-// }
-
 void createFileWithMasterAccount(FILE *fptr, struct MasterAccount *head, char fileName[50]) {
 	struct MasterAccount *ptr = NULL;
 	struct SlaveAccount *ptr_slave = NULL;
