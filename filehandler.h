@@ -50,3 +50,47 @@ void createFileWithMasterAccount(FILE *fptr, struct MasterAccount *head, char fi
 		}
 	}
 }
+
+void readFile(FILE * fptr, struct MasterAccount * head, char fileName[50]) {
+    struct MasterAccount * temp, * ptr;
+    struct SlaveAccount * temp_slave, * ptr_slave,
+    char checker[EMAIL_MAX];
+    fptr = fopen(fileName, "r");
+    if (fptr != NULL) {
+        if (!ifFileNotNull(fptr, fileName)) {
+            int access = 0, choice;
+            printf("File ditemukan!");
+            ptr = head;
+            while (fptr != EOF) {
+                temp = malloc(sizeof(struct MasterAccount));
+                fgets(temp -> username, USERNAME_MAX, fptr);
+                fgets(temp -> md5_auth, MD5_SIZE, fptr);
+                temp -> next = NULL;
+                temp -> slave = NULL;
+                while (fgets( & checker, EMAIL_MAX, fptr) != nama pemisah taro disini) {
+                    temp_slave = malloc(sizeof(struct SlaveAccount));
+                    fgets(temp_slave -> website, WEBSITE_MAX, fptr);
+                    fgets(temp_slave -> email, EMAIL_MAX, fptr);
+                    fgets(temp_slave -> password, PASSWORD_MAX, fptr);
+                    temp_slave -> next = NULL;
+                    if (temp -> slave == NULL) {
+                        temp -> slave = temp_slave;
+                        ptr_slave = temp_slave;
+                    } else {
+                        ptr_slave -> next = temp_slave;
+                        ptr_slave = ptr_slave -> next;
+                    }
+                }
+                if (head == NULL) {
+                    head = temp;
+                    ptr = temp;
+                } else {
+                    ptr -> next = temp;
+                    ptr = ptr -> next;
+                }
+            }
+        }
+    } else {
+        printf("File Gagal Ditemukan!");
+    }
+}
