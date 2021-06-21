@@ -42,6 +42,7 @@ int my_strcmp(const unsigned char *str1,const  unsigned char *str2){
 	}
 	return !flag;
 }
+
 int my_strcasestr(const unsigned char * string, const unsigned char * toFind) {
   register int slen = my_strlen(string);
   register int tFlen = my_strlen(toFind);
