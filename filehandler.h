@@ -54,10 +54,10 @@ void createFileWithMasterAccount(FILE *fptr, struct MasterAccount *head, char fi
 			inputAngka(&choice,1,2);
 			do {
 				if (choice == 1) {
-					for (ptr = head; ptr->>next != NULL; ptr = ptr->next){
+					for (ptr = head; ptr->next != NULL; ptr = ptr->next){
 						fprintf("%s\n", ptr->username);
 						fprintf("%s\n", ptr->md5_auth);
-						for (ptr_slave = head->slave; ptr_slave != NULL; ptr_slave = ptr_slave -> next){
+						for (ptr_slave = ptr->slave; ptr_slave != NULL; ptr_slave = ptr_slave -> next){
 							fprintf("%s\n", ptr_slave->website);
 							fprintf("%s\n", ptr_slave->email);
 							fprintf("%s\n", ptr_slave->password);
