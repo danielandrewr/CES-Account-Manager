@@ -16,13 +16,13 @@
 #define MD5_SIZE 16
 
 
-struct SlaveAccount{
+struct SlaveAccount{    //struct untuk slave akun dimana akan terhubung dengan master 
 	unsigned char website[USERNAME_MAX];
 	unsigned char email[EMAIL_MAX];
 	unsigned char password[PASSWORD_MAX];
 	struct SlaveAccount *next;
 };
-struct MasterAccount {
+struct MasterAccount {  //struct untuk master akun dimana akan terhubung dengan slave
 	unsigned char username[USERNAME_MAX];
 	unsigned char md5_auth[MD5_SIZE];
 	struct SlaveAccount *slave;
@@ -30,7 +30,7 @@ struct MasterAccount {
 };
 
 
-void Registrasi(struct MasterAccount **head){
+void Registrasi(struct MasterAccount **head){   // function untuk registrasi akun master
 	unsigned char *temp_email = NULL;
 	unsigned char *temp_password = NULL;
 	unsigned char *temp_username = NULL;
@@ -76,7 +76,7 @@ void Registrasi(struct MasterAccount **head){
 		printf("\033[0;0H\033[2J"); //clear console di repl
 	}while (yakin == 2);
 }
-void Add_Slave(struct SlaveAccount **head_slave, const unsigned char *password){
+void Add_Slave(struct SlaveAccount **head_slave, const unsigned char *password){  //funtion untuk menambahkan akun slave yang langsung berhubung dengan akun master
 	struct SlaveAccount *ptr = NULL;
 	
 	int yakin;
@@ -127,7 +127,7 @@ void Add_Slave(struct SlaveAccount **head_slave, const unsigned char *password){
 	ptr = NULL;
 
 }
-bool Cari_Slave(struct SlaveAccount *head_slave, const unsigned char *password){
+bool Cari_Slave(struct SlaveAccount *head_slave, const unsigned char *password){  //function untuk mencari akun slave
 	if (head_slave == NULL){
 		printf("\nTidak ada akun. Silakan tambahkan akun terlebih dahulu!\n");
 		printf("Tekan ENTER untuk kembali\n");
@@ -183,7 +183,7 @@ bool Cari_Slave(struct SlaveAccount *head_slave, const unsigned char *password){
 
 	return false;
 }
-bool Delete_Slave(struct SlaveAccount **head_slave, const unsigned char *password){
+bool Delete_Slave(struct SlaveAccount **head_slave, const unsigned char *password){ ///function untuk menghapus akun slave berdasarkan yang dipilih
 	if (head_slave == NULL){
 		printf("\nTidak ada akun. Silakan tambahkan akun terlebih dahulu!\n");
 		printf("Tekan ENTER untuk kembali\n");
@@ -235,7 +235,7 @@ bool Delete_Slave(struct SlaveAccount **head_slave, const unsigned char *passwor
 
 	return false;
 }
-bool Show_All_Slave(struct SlaveAccount *head_slave, const unsigned char *password){
+bool Show_All_Slave(struct SlaveAccount *head_slave, const unsigned char *password){  //function untuk bisa menunjukan semua akun slave
 	if (head_slave == NULL){
 		printf("Tidak ada akun. Silakan tambahkan akun terlebih dahulu!\n");
 		printf("Tekan ENTER untuk kembali\n");
@@ -270,7 +270,7 @@ bool Show_All_Slave(struct SlaveAccount *head_slave, const unsigned char *passwo
 
 	return false;
 }
-bool Delete_Account(struct SlaveAccount *head){
+bool Delete_Account(struct SlaveAccount *head){ 
 	int yakin;
 	struct SlaveAccount *ptr = NULL;
 
