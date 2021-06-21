@@ -270,7 +270,7 @@ bool Show_All_Slave(struct SlaveAccount *head_slave, const unsigned char *passwo
 
 	return false;
 }
-bool Delete_Account(struct SlaveAccount *head){ 
+bool Delete_Account(struct SlaveAccount *head){ //function untuk menghapus akun master yang juga akan menghapus akun slave yang berhubungan dengan akun master tersebut
 	int yakin;
 	struct SlaveAccount *ptr = NULL;
 
@@ -290,7 +290,7 @@ bool Delete_Account(struct SlaveAccount *head){
 		return false;
 	}
 }
-bool Login_Success(struct MasterAccount *head, unsigned char *password){
+bool Login_Success(struct MasterAccount *head, unsigned char *password){  //function untuk mengecek login sudah benar atau belum
 	unsigned char *decrypted_username = malloc(USERNAME_MAX*sizeof(unsigned char));
 	my_strcpy(decrypted_username, head->username);
 	decrypt(decrypted_username, password);
@@ -324,7 +324,7 @@ bool Login_Success(struct MasterAccount *head, unsigned char *password){
 	return deleted;
 }
 
-bool Login(struct MasterAccount **head) {
+bool Login(struct MasterAccount **head) { //function untuk mengecek login
 	if (head == NULL){
 		printf("Database kosong! Silakan registrasi terlebih dahulu!\n");
 		printf("Tekan ENTER untuk kembali\n");
@@ -386,7 +386,7 @@ bool Login(struct MasterAccount **head) {
 	return false;
 }
 
-int main(void) {
+int main(void) {    //main function
 	struct MasterAccount *head = NULL;
 	int menu;
 
