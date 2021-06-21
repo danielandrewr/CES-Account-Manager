@@ -39,7 +39,11 @@ bool ifFileNotNull(FILE *fptr, char fileName[50]) {
 // }
 
 void createFileWithMasterAccount(FILE *fptr, struct MasterAccount *head, char fileName[50]) {
-	struct MasterAccount *data;
+	struct MasterAccount *ptr = NULL;
+	struct SlaveAccount *ptr_slave = NULL;
+
+	int choice;
+	
 	fptr = fopen(fileName, "w");
 
 	if (fptr != NULL) {
@@ -47,22 +51,18 @@ void createFileWithMasterAccount(FILE *fptr, struct MasterAccount *head, char fi
 
 			int access = 0, choice;
 			printf("File yang ingin dioverride tidak kosong, Apakah Anda ingin melanjutkan?\n 1). Yes\n 2).No\n");
-			scanf("%d", &choice);
+			inputAngka(&choice,1,2);
 			do {
 				if (choice == 1) {
-					while (head->next != NULL) {
-					fprintf("%s\n", head->username);
-					fprintf("%s\n", head->md5_auth);
-
-						while (data->slave != NULL) {
-							fprintf("%s\n", data->slave->website);
-							fprintf("%s\n", data->slave->email);
-							fprintf("%s\n", data->slave->password);
-							data = data->slave;
+					for (ptr = head; ptr->>next != NULL; ptr = ptr->next){
+						fprintf("%s\n", ptr->username);
+						fprintf("%s\n", ptr->md5_auth);
+						for (ptr_slave = head->slave; ptr_slave != NULL; ptr_slave = ptr_slave -> next){
+							fprintf("%s\n", ptr_slave->website);
+							fprintf("%s\n", ptr_slave->email);
+							fprintf("%s\n", ptr_slave->password);
 						}
-
-					fprintf("***\n");
-					head = head->next;
+						fprintf("***\n");
 					}
 				} else if (choice == 2) {
 					access = -1;

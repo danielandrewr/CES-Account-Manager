@@ -50,7 +50,9 @@ void Registrasi(struct MasterAccount **head){   // function untuk registrasi aku
 		printf("Masukkan password akun master: ");
 		inputString(temp_password,PASSWORD_MIN,PASSWORD_MAX); //password length minimal 6, max 101
 
+    printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 		printf("Apakah anda yakin dengan data yang telah diinput? (1. Ya 2. Ulangi 3. Tidak jadi registrasi)\n");
+    printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 		inputAngka(&yakin,1,3);
 		switch (yakin){
 			case 1: 
@@ -97,7 +99,9 @@ void Add_Slave(struct SlaveAccount **head_slave, const unsigned char *password){
 		printf("Password baru: ");
 		inputString(temp_password,USERNAME_MIN,USERNAME_MAX);
 
+    printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 		printf("Apakah anda yakin dengan perubahan ini?\n1. Yakin\n2. Ulangi input 3. Tidak jadi input\n");
+    printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 		inputAngka(&yakin,1,3);
 		switch (yakin){
 			case 1: ptr = malloc(sizeof(struct SlaveAccount));
@@ -237,8 +241,10 @@ bool Delete_Slave(struct SlaveAccount **head_slave, const unsigned char *passwor
 }
 bool Show_All_Slave(struct SlaveAccount *head_slave, const unsigned char *password){  //function untuk bisa menunjukan semua akun slave
 	if (head_slave == NULL){
+    printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 		printf("Tidak ada akun. Silakan tambahkan akun terlebih dahulu!\n");
 		printf("Tekan ENTER untuk kembali\n");
+    printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 		getchar();
 		return true;
 	}
@@ -274,7 +280,9 @@ bool Delete_Account(struct SlaveAccount *head){ //function untuk menghapus akun 
 	int yakin;
 	struct SlaveAccount *ptr = NULL;
 
+  printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 	printf("Apakah anda yakin untuk menghapus akun master seluruhnya?\n1. Yakin\n2. Tidak jadi\n");
+  printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 	printf("Masukkan pilihan: ");
 	inputAngka(&yakin,1,2);
 	if(yakin == 1){
@@ -300,8 +308,10 @@ bool Login_Success(struct MasterAccount *head, unsigned char *password){  //func
 
 	do{
 		printf("\033[0;0H\033[2J"); //clear console replit
+    printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 		printf("Selamat datang, %s!\n",decrypted_username);
 		printf("Menu\n1. Lampirkan semua akun\n2. Tambah akun\n3. Cari akun\n4. Delete akun\n5. Delete akun master\n6. Logout\n");
+    printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 		printf("Masukkan pilihan: ");
 		inputAngka(&pilihan, 1,4);
 		switch (pilihan){
@@ -326,8 +336,10 @@ bool Login_Success(struct MasterAccount *head, unsigned char *password){  //func
 
 bool Login(struct MasterAccount **head) { //function untuk mengecek login
 	if (head == NULL){
+    printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 		printf("Database kosong! Silakan registrasi terlebih dahulu!\n");
 		printf("Tekan ENTER untuk kembali\n");
+    printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 		getchar();
 		return true;
 	}
@@ -345,8 +357,10 @@ bool Login(struct MasterAccount **head) { //function untuk mengecek login
 		temp_password = malloc(101*sizeof(unsigned char));
 		temp_md5 = malloc(16*sizeof(unsigned char));
 
+    printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 		printf("\n\nMasukkan email\t: ");
 		inputString(temp_email,EMAIL_MIN,EMAIL_MAX);
+    printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 		printf("\n\nMasukkan password\t: ");
 		inputString(temp_password,PASSWORD_MIN,PASSWORD_MAX);
 		
@@ -374,6 +388,7 @@ bool Login(struct MasterAccount **head) { //function untuk mengecek login
 		}
 
 		if (ptr == NULL && !authenticated){
+      printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 			printf("Email dan password salah!\n1. Input ulang email dan password\n2. Exit\n");
 			inputAngka(&exit, 1, 2);
 		}
@@ -392,9 +407,11 @@ int main(void) {    //main function
 
 	
 	do{
+    printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 		printf("Selamat datang di Proglan Account Manager!\n");
  		printf("Silahkan pilih salah satu menu\n");
 		printf("Menu\n1. Register\n2. Login\n3. Exit\n");
+    printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 		printf("Masukkan pilihan: ");
 		inputAngka(&menu,1,3);
 		switch (menu){
