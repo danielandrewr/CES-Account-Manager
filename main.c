@@ -140,7 +140,7 @@ bool Cari_Slave(struct SlaveAccount *head_slave, const unsigned char *password){
 		getchar();
 		return true;
 	}
-	struct SlaveAccount *ptr = head_slave;
+	struct SlaveAccount *ptr = NULL;
 	unsigned char *pencarian = NULL;
 	unsigned char *decrypted_website = NULL;
 	unsigned char *decrypted_email = NULL;
@@ -155,7 +155,7 @@ bool Cari_Slave(struct SlaveAccount *head_slave, const unsigned char *password){
 		decrypted_password = malloc(PASSWORD_MAX*sizeof(unsigned char));
 		printf("Masukkan akun website yang ingin dicari: ");
 		inputString(pencarian,1,USERNAME_MAX);
-		while (ptr != NULL){
+		for (ptr = head_slave; ptr != NULL; ptr = ptr->next){
 			my_strcpy(decrypted_website,ptr->website);
 			decrypt(decrypted_website,password);
 			if (!my_strcasestr(decrypted_website,pencarian)){
@@ -171,7 +171,6 @@ bool Cari_Slave(struct SlaveAccount *head_slave, const unsigned char *password){
 				
 				printed = true;
 			}
-			ptr = ptr->next;
 		}
 		if(!printed){
 			printf("\nAkun tidak ditemukan!\n");
