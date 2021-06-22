@@ -1,12 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "parallel_string.h"
-#include "md5.h"
-#include "get_input.h"
-#include "encipher.h"
-#include "filehandler.h"
-#define fileName "Encrypted Database.txt"
 
 #define USERNAME_MIN 5
 #define USERNAME_MAX 50
@@ -15,6 +9,8 @@
 #define PASSWORD_MIN 6
 #define PASSWORD_MAX 100
 #define MD5_SIZE 16
+
+const char *fileName = "Encrypted Database.txt";
 
 
 struct SlaveAccount{    //struct untuk slave akun dimana akan terhubung dengan master 
@@ -30,8 +26,14 @@ struct MasterAccount {  //struct untuk master akun dimana akan terhubung dengan 
 	struct MasterAccount *next;
 };
 
+#include "parallel_string.h"
+#include "md5.h"
+#include "get_input.h"
+#include "encipher.h"
+#include "filehandler.h"
 
-void Registrasi(struct MasterAccount **head){   // function untuk registrasi akun master
+// function untuk registrasi akun master
+void Registrasi(struct MasterAccount **head){   
 	unsigned char *temp_email = NULL;
 	unsigned char *temp_password = NULL;
 	unsigned char *temp_username = NULL;
@@ -79,7 +81,8 @@ void Registrasi(struct MasterAccount **head){   // function untuk registrasi aku
 		printf("\033[0;0H\033[2J"); //clear console di repl
 	}while (yakin == 2);
 }
-void Add_Slave(struct SlaveAccount **head_slave, const unsigned char *password){  //funtion untuk menambahkan akun slave yang langsung berhubung dengan akun master
+//funtion untuk menambahkan akun slave yang langsung berhubung dengan akun master
+void Add_Slave(struct SlaveAccount **head_slave, const unsigned char *password){  
 	struct SlaveAccount *ptr = NULL;
 	
 	int yakin;
@@ -132,7 +135,8 @@ void Add_Slave(struct SlaveAccount **head_slave, const unsigned char *password){
 	ptr = NULL;
 
 }
-bool Cari_Slave(struct SlaveAccount *head_slave, const unsigned char *password){  //function untuk mencari akun slave
+//function untuk mencari akun slave
+bool Cari_Slave(struct SlaveAccount *head_slave, const unsigned char *password){  
 	if (head_slave == NULL){
     printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 		printf("\nTidak ada akun. Silakan tambahkan akun terlebih dahulu!\n");  //memberitahu bahwa tidak ada akun yang tersimpan
@@ -189,7 +193,8 @@ bool Cari_Slave(struct SlaveAccount *head_slave, const unsigned char *password){
 
 	return false;
 }
-bool Delete_Slave(struct SlaveAccount **head_slave, const unsigned char *password){ ///function untuk menghapus akun slave berdasarkan yang dipilih
+//function untuk menghapus akun slave berdasarkan yang dipilih
+bool Delete_Slave(struct SlaveAccount **head_slave, const unsigned char *password){ 
 	if (head_slave == NULL){
     printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 		printf("\nTidak ada akun. Silakan tambahkan akun terlebih dahulu!\n");
@@ -247,7 +252,8 @@ bool Delete_Slave(struct SlaveAccount **head_slave, const unsigned char *passwor
 
 	return false;
 }
-bool Show_All_Slave(struct SlaveAccount *head_slave, const unsigned char *password){  //function untuk bisa menunjukan semua akun slave
+//function untuk bisa menunjukan semua akun slave
+bool Show_All_Slave(struct SlaveAccount *head_slave, const unsigned char *password){  
 	if (head_slave == NULL){
     printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 		printf("Tidak ada akun. Silakan tambahkan akun terlebih dahulu!\n");
@@ -284,7 +290,8 @@ bool Show_All_Slave(struct SlaveAccount *head_slave, const unsigned char *passwo
 
 	return false;
 }
-bool Delete_Account(struct SlaveAccount *head){ //function untuk menghapus akun master yang juga akan menghapus akun slave yang berhubungan dengan akun master tersebut
+//function untuk menghapus akun master yang juga akan menghapus akun slave yang berhubungan dengan akun master tersebut
+bool Delete_Account(struct SlaveAccount *head){ 
 	int yakin;
 	struct SlaveAccount *ptr = NULL;
 
@@ -306,7 +313,8 @@ bool Delete_Account(struct SlaveAccount *head){ //function untuk menghapus akun 
 		return false;
 	}
 }
-bool Login_Success(struct MasterAccount *head, unsigned char *password){  //function untuk mengecek login sudah benar atau belum
+//function untuk mengecek login sudah benar atau belum
+bool Login_Success(struct MasterAccount *head, unsigned char *password){  
 	unsigned char *decrypted_username = malloc(USERNAME_MAX*sizeof(unsigned char));
 	my_strcpy(decrypted_username, head->username);
 	decrypt(decrypted_username, password);
@@ -410,6 +418,7 @@ bool Login(struct MasterAccount **head) { //function untuk mengecek login
 }
 
 int main(void) {    //main function
+	
 	struct MasterAccount *head = NULL;
 	int menu;
   FILE *fptr;
@@ -439,7 +448,8 @@ int main(void) {    //main function
 		}
 		printf("\033[0;0H\033[2J"); //clear console replit		
 	} while (menu != 3);
-  createFileWithMasterAccount(head);
+	
+    createFileWithMasterAccount(head);
 	return 0;
 }
 

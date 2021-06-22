@@ -1,3 +1,6 @@
+#ifndef SUBBYTES
+#define SUBBYTES
+
 unsigned char sbox(unsigned char M){
 	unsigned char SBOX[256] =
 {
@@ -52,3 +55,5 @@ unsigned char rsbox(unsigned char M){
     0x55, 0x21, 0x0c, 0x7d };
    	return RSBOX[M];
 }
+
+#endif //SUBBYTES

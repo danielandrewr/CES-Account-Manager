@@ -1,3 +1,6 @@
+#ifndef ENCIPHER
+#define ENCIPHER
+
 #include "subbytes.h"
 
 int special(int a, int b){ //function for negative numbers of modulo, recursively
@@ -60,3 +63,4 @@ char decrypt(unsigned char *M, const unsigned char *key){
 	//}
 	return 0;
 }
+#endif //ENCIPHER

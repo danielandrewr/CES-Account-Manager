@@ -3,7 +3,8 @@ Header ini adalah kumpulan fungsi string.h yang dibutuhkan
 oleh kelompok kami dan  beberapa dimodifikasi menjadi versi paralel
 jika memungkinkan.
 */
-
+#ifndef PARALLEL_STRING
+#define PARALLEL_STRING
 //Fungsi strlen. Tidak bisa diparalelkan.
 int my_strlen(const unsigned char *string){
 	register int i;
@@ -81,3 +82,4 @@ int my_strcasestr(const unsigned char * string, const unsigned char * toFind) {
     return 1;
   } else return -1;
 }
+#endif //PARALLEL_STRING

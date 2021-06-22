@@ -1,7 +1,15 @@
+#ifndef FILEHANDLER
+#define FILEHANDLER
+
+#include <stdio.h>
+#include <stdlib.h>
+
 // fungsi ngecek filenya ada isi
-bool ifFileNotNull() {
+
+bool ifFileNotNull(FILE *fptr) {
 	bool fileNotNull = false;
-  FILE *fptr;
+ 
+
 	fptr = fopen(fileName, "r");
 	if (fptr != NULL) {
 		fseek(fptr, 0, SEEK_END);
@@ -14,34 +22,34 @@ bool ifFileNotNull() {
 	return fileNotNull;
 }
 
+
 //function untuk menciptakn file baru untuk disimpah, dan akan digunakan pada run kedepannya
 void createFileWithMasterAccount(struct MasterAccount *head) { 
 	struct MasterAccount *ptr = NULL;
 	struct SlaveAccount *ptr_slave = NULL;
 	unsigned char *temp_md5 = NULL;
 	unsigned char *temp_concat = NULL;
-	int choice;
-	FILE *fptr
+	FILE *fptr;
 	fptr = fopen(fileName, "w");
 
 	if (fptr != NULL) {
-		if (!ifFileNotNull(fptr, fileName)) {
+		if (!ifFileNotNull(fptr)) {
 
 			int access = 0, choice;
 			printf("File yang ingin dioverride tidak kosong, Apakah Anda ingin melanjutkan?\n 1). Yes\n 2).No\n");
 			inputAngka(&choice,1,2);
 			do {
 				if (choice == 1) {
-					for (ptr = head; ptr->next != NULL; ptr = ptr->next){
-						fprintf("%s\n", ptr->username);
-						fprintf("%s\n", ptr->md5_auth);
+					for (ptr = head; ptr != NULL; ptr = ptr->next){
+						fprintf(fptr,"%s\n", ptr->username);
+						fprintf(fptr,"%s\n", ptr->md5_auth);
 						for (ptr_slave = ptr->slave; ptr_slave != NULL; ptr_slave = ptr_slave -> next){
-							fprintf("%s\n", ptr_slave->website);
-							fprintf("%s\n", ptr_slave->email);
-							fprintf("%s\n", ptr_slave->password);
+							fprintf(fptr,"%s\n", ptr_slave->website);
+							fprintf(fptr,"%s\n", ptr_slave->email);
+							fprintf(fptr,"%s\n", ptr_slave->password);
 						}
-						temp_md5 = malloc(MD5_MAX*sizeof(unsigned char));
-						temp_concat = malloc((USERNAME_MAX+MD5_MAX)*sizeof(unsigned char));
+						temp_md5 = malloc(MD5_SIZE*sizeof(unsigned char));
+						temp_concat = malloc((USERNAME_MAX+MD5_SIZE)*sizeof(unsigned char));
 
 						my_strcpy(temp_concat,ptr->username);
 						my_strcat(temp_concat,ptr->md5_auth);
@@ -49,7 +57,7 @@ void createFileWithMasterAccount(struct MasterAccount *head) {
 						md5(temp_concat,my_strlen(temp_concat),temp_md5);
 						free(temp_concat);
 
-						fprintf("%s\n",temp_md5);
+						fprintf(fptr,"%s\n",temp_md5);
 
 						free(temp_md5);
 					}
@@ -75,30 +83,30 @@ void readFile(struct MasterAccount * head) {
     fptr = fopen(fileName, "r");
 	
     if (fptr != NULL) {
-        if (!ifFileNotNull(fptr, fileName)) {
+        if (!ifFileNotNull(fptr)) {
             int access = 0, choice;
             printf("File ditemukan!");
             ptr = head;
             while (fptr != EOF) {
                 temp = malloc(sizeof(struct MasterAccount));
-                fgets(temp -> username, USERNAME_MAX, fptr);
-                fgets(temp -> md5_auth, MD5_SIZE, fptr);
+                fgets((char*)temp -> username, USERNAME_MAX, fptr);
+                fgets((char*)temp -> md5_auth, MD5_SIZE, fptr);
                 temp -> next = NULL;
                 temp -> slave = NULL;
 
-				temp_md5 = malloc(MD5_MAX*sizeof(unsigned char));
-				temp_concat = malloc((USERNAME_MAX+MD5_MAX)*sizeof(unsigned char));
+				temp_md5 = malloc(MD5_SIZE*sizeof(unsigned char));
+				temp_concat = malloc((USERNAME_MAX+MD5_SIZE)*sizeof(unsigned char));
 
 				my_strcpy(temp_concat,temp->username);
 				my_strcat(temp_concat,temp->md5_auth);
 
 				md5(temp_concat,my_strlen(temp_concat),temp_md5);
 				free(temp_concat);
-                while (my_strcmp(fgets(checker, EMAIL_MAX, fptr), temp_md5)!=0) {
+                while (my_strcmp((unsigned char*)fgets((char*)checker, EMAIL_MAX, fptr), temp_md5)!=0) {
                     temp_slave = malloc(sizeof(struct SlaveAccount));
-					strcpy(temp_slave -> website, checker);
-                    fgets(temp_slave -> email, EMAIL_MAX, fptr);
-                    fgets(temp_slave -> password, PASSWORD_MAX, fptr);
+					my_strcpy(temp_slave -> website, checker);
+                    fgets((char*)temp_slave -> email, EMAIL_MAX, fptr);
+                    fgets((char*)temp_slave -> password, PASSWORD_MAX, fptr);
                     temp_slave -> next = NULL;
                     if (temp -> slave == NULL) {
                         temp -> slave = temp_slave;
@@ -119,7 +127,9 @@ void readFile(struct MasterAccount * head) {
             }
         }
     } else {
-        printf("File Gagal Ditemukan!");
+        printf("File Gagal Ditemukan!\n\n");
     }
 	free(checker);
 }
+
+#endif //FILEHANDLER

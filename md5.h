@@ -4,6 +4,11 @@ Sumber: https://github.com/pod32g/MD5/blob/master/md5.c
 Dilakukan sedikit modifikasi sehingga tidak memerlukan
 header <stdint.h>
 */
+#ifndef MD5
+#define MD5
+
+#include <stdlib.h>
+#include "parallel_string.h"
 
 // Constants are the integer part of the sines of integers (in radians) * 2^32.
 const unsigned int k[64] = {
@@ -143,3 +148,5 @@ void md5(const unsigned char *initial_msg, size_t initial_len, unsigned char *di
     to_bytes(h2, digest + 8);
     to_bytes(h3, digest + 12);
 }
+
+#endif //MD5

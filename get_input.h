@@ -3,6 +3,11 @@ Header ini merupakan kumpulan fungsi scanf yang diberikan error handling.
 Berisi scanf khusus integer dan scanf khusus string yang diberi batas bawah
 dan batas atas.
 */
+#ifndef GET_INPUT
+#define GET_INPUT
+
+#include <stdio.h>
+#include <stdlib.h>
 
 //Fungsi yang berguna untuk membersihan STDIN.
 int clean_stdin() {
@@ -47,3 +52,4 @@ void inputString(unsigned char * string, const unsigned int batas_bawah, const u
   } while (count < batas_bawah || count > batas_atas);
 	free(input);
 }
+#endif //GET_INPUT
