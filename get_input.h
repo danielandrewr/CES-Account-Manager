@@ -1,8 +1,16 @@
+/*
+Header ini merupakan kumpulan fungsi scanf yang diberikan error handling.
+Berisi scanf khusus integer dan scanf khusus string yang diberi batas bawah
+dan batas atas.
+*/
+
+//Fungsi yang berguna untuk membersihan STDIN.
 int clean_stdin() {
   while (getchar() != '\n');
   return 1;
 }
 
+//Fungsi khusus integer yang akan mendeteksi jika diinput huruf.
 void inputInteger(int * variabel) {
   unsigned char dummy;
   while ((scanf("%d%c", variabel, & dummy) != 2 || dummy != '\n') && clean_stdin()) {
@@ -10,7 +18,8 @@ void inputInteger(int * variabel) {
   }
 }
 
-void inputAngka(int * angka, int batas_bawah, int batas_atas) {
+//Fungsi yang mendeteksi besarnya input integer di atas.
+void inputAngka(int * angka, const int batas_bawah, const int batas_atas) {
   do {
     inputInteger(angka);
     if ( * angka < batas_bawah || * angka > batas_atas) {
@@ -19,8 +28,9 @@ void inputAngka(int * angka, int batas_bawah, int batas_atas) {
   } while ( * angka < batas_bawah || * angka > batas_atas);
 }
 
+//Fungsi khusus untuk mendapatkan input string dengan batas bawah dan batas atas.
 void inputString(unsigned char * string, const unsigned int batas_bawah, const unsigned int batas_atas) {
-  unsigned short int i, count = 0;
+  register unsigned short int i, count = 0;
   unsigned char *input = malloc(256*sizeof(unsigned char));
   do {
     scanf(" %255[^\n]hhu", input);

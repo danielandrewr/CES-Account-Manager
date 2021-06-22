@@ -1,9 +1,17 @@
+/*
+Header ini adalah kumpulan fungsi string.h yang dibutuhkan
+oleh kelompok kami dan  beberapa dimodifikasi menjadi versi paralel
+jika memungkinkan.
+*/
+
+//Fungsi strlen. Tidak bisa diparalelkan.
 int my_strlen(const unsigned char *string){
 	register int i;
 	for(i = 0; string[i] != '\0'; i++);
 	return i;
 }
 
+//Fungsi strcpy yang diubah menjadi paralel
 void my_strcpy(unsigned char *destination, const unsigned char *source){ //parameter ketiga beda 
 	register int i, size_source = my_strlen(source);
 	
@@ -14,6 +22,7 @@ void my_strcpy(unsigned char *destination, const unsigned char *source){ //param
 	destination[size_source + 1] = '\0';
 }
 
+//Fungsi strcat yang diubah menjadi paralel
 void my_strcat(unsigned char *destination, const unsigned char *source){
 	register int i;
 	register int size_source = my_strlen(source);
@@ -26,7 +35,7 @@ void my_strcat(unsigned char *destination, const unsigned char *source){
 	}
 	destination[size_keduanya + 1] = '\0';
 }
-
+//Fungsi strcmp yang diubah menjadi paralel
 int my_strcmp(const unsigned char *str1,const  unsigned char *str2){
 	register int i,flag = 1;
 	register int len_str1 = my_strlen(str1);
@@ -43,6 +52,10 @@ int my_strcmp(const unsigned char *str1,const  unsigned char *str2){
 	return !flag;
 }
 
+/*
+Fungsi strcasecmp, tetapi dapat digunakan jika kata yang dicari tidak persis.
+Contohnya, ada "facebook.com", tetapi dengan mencari "Book" dapat ditemukan.
+*/
 int my_strcasestr(const unsigned char * string, const unsigned char * toFind) {
   register int slen = my_strlen(string);
   register int tFlen = my_strlen(toFind);

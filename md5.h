@@ -1,5 +1,10 @@
-//test MD5 semoga ga ada collision
- //sumber: https://github.com/pod32g/MD5/blob/master/md5.c
+/*
+Header untuk melakukan hashing menggunakan metode MD5.
+Sumber: https://github.com/pod32g/MD5/blob/master/md5.c
+Dilakukan sedikit modifikasi sehingga tidak memerlukan
+header <stdint.h>
+*/
+
 // Constants are the integer part of the sines of integers (in radians) * 2^32.
 const unsigned int k[64] = {
 0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee ,

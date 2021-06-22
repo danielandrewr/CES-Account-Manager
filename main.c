@@ -66,7 +66,7 @@ void Registrasi(struct MasterAccount **head){   // function untuk registrasi aku
 					}else{
 						ptr->next = *head;
 					}
-					*head = ptr; //LIFO agar algoritma penambahannya time complexity nya O(N)
+					*head = ptr; //LIFO agar algoritma penambahannya time complexity nya O(1)
 					break;
 			case 2: break;
 			default: break;
@@ -436,7 +436,7 @@ int main(void) {    //main function
       	break;
 		}
 		printf("\033[0;0H\033[2J"); //clear console replit		
-	} while ((menu >= 1) && (menu <= 2));
+	} while (menu != 3));
 	return 0;
 }
 
