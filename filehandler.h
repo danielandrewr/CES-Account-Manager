@@ -14,7 +14,8 @@ bool ifFileNotNull() {
 	return fileNotNull;
 }
 
-void createFileWithMasterAccount(struct MasterAccount *head) { //function untuk menciptakn file baru untuk disimpah, dan akan digunakan pada run kedepannya
+//function untuk menciptakn file baru untuk disimpah, dan akan digunakan pada run kedepannya
+void createFileWithMasterAccount(struct MasterAccount *head) { 
 	struct MasterAccount *ptr = NULL;
 	struct SlaveAccount *ptr_slave = NULL;
 	unsigned char *temp_md5 = NULL;
@@ -41,11 +42,15 @@ void createFileWithMasterAccount(struct MasterAccount *head) { //function untuk 
 						}
 						temp_md5 = malloc(MD5_MAX*sizeof(unsigned char));
 						temp_concat = malloc((USERNAME_MAX+MD5_MAX)*sizeof(unsigned char));
+
 						my_strcpy(temp_concat,ptr->username);
 						my_strcat(temp_concat,ptr->md5_auth);
-						md5(temp_concat,strlen(temp_concat),temp_md5);
+
+						md5(temp_concat,my_strlen(temp_concat),temp_md5);
 						free(temp_concat);
+
 						fprintf("%s\n",temp_md5);
+
 						free(temp_md5);
 					}
 				} else if (choice == 2) {
@@ -59,7 +64,8 @@ void createFileWithMasterAccount(struct MasterAccount *head) { //function untuk 
 	}
 }
 
-void readFile(struct MasterAccount * head) {  //function untuk membaca file yang sebelumnya sudah disimpan
+//function untuk membaca file yang sebelumnya sudah disimpan
+void readFile(struct MasterAccount * head) {  
     struct MasterAccount * temp, * ptr;
     struct SlaveAccount * temp_slave, * ptr_slave;
     unsigned char *checker = malloc(EMAIL_MAX*sizeof(unsigned char));
@@ -82,9 +88,11 @@ void readFile(struct MasterAccount * head) {  //function untuk membaca file yang
 
 				temp_md5 = malloc(MD5_MAX*sizeof(unsigned char));
 				temp_concat = malloc((USERNAME_MAX+MD5_MAX)*sizeof(unsigned char));
-				my_strcpy(temp_concat,ptr->username);
-				my_strcat(temp_concat,ptr->md5_auth);
-				md5(temp_concat,strlen(temp_concat),temp_md5);
+
+				my_strcpy(temp_concat,temp->username);
+				my_strcat(temp_concat,temp->md5_auth);
+
+				md5(temp_concat,my_strlen(temp_concat),temp_md5);
 				free(temp_concat);
                 while (my_strcmp(fgets(checker, EMAIL_MAX, fptr), temp_md5)!=0) {
                     temp_slave = malloc(sizeof(struct SlaveAccount));
