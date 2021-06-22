@@ -92,11 +92,11 @@ void Add_Slave(struct SlaveAccount **head_slave, const unsigned char *password){
 		temp_password = malloc(PASSWORD_MAX*sizeof(unsigned char));
 
 		
-		printf("Website baru: ");
+		printf("Website baru: ");     //input nama website baru
 		inputString(temp_website,USERNAME_MIN,USERNAME_MAX);
-		printf("Email baru: ");
+		printf("Email baru: ");       //input nama email baru
 		inputString(temp_email,EMAIL_MIN,EMAIL_MAX);
-		printf("Password baru: ");
+		printf("Password baru: ");    //input password baru
 		inputString(temp_password,USERNAME_MIN,USERNAME_MAX);
 
     printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
@@ -134,7 +134,7 @@ void Add_Slave(struct SlaveAccount **head_slave, const unsigned char *password){
 bool Cari_Slave(struct SlaveAccount *head_slave, const unsigned char *password){  //function untuk mencari akun slave
 	if (head_slave == NULL){
     printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
-		printf("\nTidak ada akun. Silakan tambahkan akun terlebih dahulu!\n");
+		printf("\nTidak ada akun. Silakan tambahkan akun terlebih dahulu!\n");  //memberitahu bahwa tidak ada akun yang tersimpan
 		printf("Tekan ENTER untuk kembali\n");
     printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 		getchar();
@@ -153,7 +153,7 @@ bool Cari_Slave(struct SlaveAccount *head_slave, const unsigned char *password){
 		decrypted_website = malloc(USERNAME_MAX*sizeof(unsigned char));
 		decrypted_email = malloc(EMAIL_MAX*sizeof(unsigned char));
 		decrypted_password = malloc(PASSWORD_MAX*sizeof(unsigned char));
-		printf("Masukkan akun website yang ingin dicari: ");
+		printf("Masukkan akun website yang ingin dicari: ");    //input website untuk dicari
 		inputString(pencarian,1,USERNAME_MAX);
 		for (ptr = head_slave; ptr != NULL; ptr = ptr->next){
 			my_strcpy(decrypted_website,ptr->website);
@@ -165,7 +165,7 @@ bool Cari_Slave(struct SlaveAccount *head_slave, const unsigned char *password){
 				decrypt(decrypted_email,password);
 				decrypt(decrypted_password,password);
 				
-				printf("\nWebsite: %s\n",decrypted_website);
+				printf("\nWebsite: %s\n",decrypted_website);    //menunjukan akun pada website yang telah dicari
 				printf("Email: %s\n",decrypted_email);
 				printf("Password: %s\n\n",decrypted_password);
 				
@@ -173,7 +173,7 @@ bool Cari_Slave(struct SlaveAccount *head_slave, const unsigned char *password){
 			}
 		}
 		if(!printed){
-			printf("\nAkun tidak ditemukan!\n");
+			printf("\nAkun tidak ditemukan!\n");  //akun tidak ditemukan pada website yang dicari
 		}
 		printf("Ingin mencari lagi?\n1. Ya\n2. Tidak\n");
 		inputAngka(&again,1,2);
@@ -411,7 +411,6 @@ bool Login(struct MasterAccount **head) { //function untuk mengecek login
 int main(void) {    //main function
 	struct MasterAccount *head = NULL;
 	int menu;
-
 	
 	do{
     printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
@@ -426,13 +425,15 @@ int main(void) {    //main function
 				break;
 			case 2: Login(&head);
 				break;
-      		case 3:
+      case 3:
+        printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 				printf("Terima kasih karena telah menggunakan aplikasi Account Manager!");
 				printf("Tekan ENTER untuk kembali\n");
+        printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 				getchar();
 				break;
-				default: 
-      			break;
+			default: 
+      	break;
 		}
 		printf("\033[0;0H\033[2J"); //clear console replit		
 	} while ((menu >= 1) && (menu <= 2));
