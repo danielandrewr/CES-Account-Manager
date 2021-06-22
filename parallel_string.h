@@ -20,7 +20,7 @@ void my_strcpy(unsigned char *destination, const unsigned char *source){ //param
 	for (i = 0; i<size_source; i++){
 		destination[i] = source[i];
 	}
-	destination[size_source + 1] = '\0';
+	destination[size_source] = '\0';
 }
 
 //Fungsi strcat yang diubah menjadi paralel
@@ -31,10 +31,10 @@ void my_strcat(unsigned char *destination, const unsigned char *source){
 	register int size_keduanya = size_source + size_destination;
 
 	//#pragma omp parallel for
-	for (i = size_destination + 1; i<size_keduanya; i++){
-		destination[i] = source[i-size_destination-1];
+	for (i = size_destination; i<size_keduanya; i++){
+		destination[i] = source[i-size_destination];
 	}
-	destination[size_keduanya + 1] = '\0';
+	destination[size_keduanya] = '\0';
 }
 //Fungsi strcmp yang diubah menjadi paralel
 int my_strcmp(const unsigned char *str1,const  unsigned char *str2){

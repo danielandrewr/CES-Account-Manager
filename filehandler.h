@@ -3,106 +3,104 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
+const unsigned char penanda[] = "Z6@z#6iHx@4U%ncK^m$^";
 // fungsi ngecek filenya ada isi
-
 bool ifFileNotNull(FILE *fptr) {
 	bool fileNotNull = false;
- 
 
 	fptr = fopen(fileName, "r");
 	if (fptr != NULL) {
 		fseek(fptr, 0, SEEK_END);
 		int fsize = ftell(fptr);
+		// printf("%d", fsize);
 		if (fsize != 0)
-			fileNotNull = true;  
+			fileNotNull = true;
 
 	} else printf("\nUps, Something went wrong!\n");
+
 	fclose(fptr);
 	return fileNotNull;
 }
 
 
 //function untuk menciptakn file baru untuk disimpah, dan akan digunakan pada run kedepannya
-void createFileWithMasterAccount(struct MasterAccount *head) { 
-	struct MasterAccount *ptr = NULL;
-	struct SlaveAccount *ptr_slave = NULL;
-	unsigned char *temp_md5 = NULL;
-	unsigned char *temp_concat = NULL;
-	FILE *fptr;
-	fptr = fopen(fileName, "w");
+bool createFileWithMasterAccount(struct MasterAccount * head) {
+    struct MasterAccount * ptr = NULL;
+    struct SlaveAccount * ptr_slave = NULL;
+    FILE * fptr;
+    fptr = fopen(fileName, "r");
+    if (fptr == NULL) { //kalo file baru
+        fptr = fopen(fileName, "w");
+    }
 
-	if (fptr != NULL) {
-		if (!ifFileNotNull(fptr)) {
+    if (fptr != NULL) {
+        if (ifFileNotNull(fptr)) {
+            int choice;
+            printf("File yang ingin dioverride tidak kosong, Apakah Anda ingin melanjutkan?\n 1). Yes\n 2). No\n");
+            inputAngka( & choice, 1, 2);
 
-			int access = 0, choice;
-			printf("File yang ingin dioverride tidak kosong, Apakah Anda ingin melanjutkan?\n 1). Yes\n 2).No\n");
-			inputAngka(&choice,1,2);
-			do {
-				if (choice == 1) {
-					for (ptr = head; ptr != NULL; ptr = ptr->next){
-						fprintf(fptr,"%s\n", ptr->username);
-						fprintf(fptr,"%s\n", ptr->md5_auth);
-						for (ptr_slave = ptr->slave; ptr_slave != NULL; ptr_slave = ptr_slave -> next){
-							fprintf(fptr,"%s\n", ptr_slave->website);
-							fprintf(fptr,"%s\n", ptr_slave->email);
-							fprintf(fptr,"%s\n", ptr_slave->password);
-						}
-						temp_md5 = malloc(MD5_SIZE*sizeof(unsigned char));
-						temp_concat = malloc((USERNAME_MAX+MD5_SIZE)*sizeof(unsigned char));
+            if (choice == 2) {
+                fclose(fptr);
+                return false;
+            }
+        } //sama aja gasi
+        fptr = fopen(fileName, "w");
+        for (ptr = head; ptr != NULL; ptr = ptr -> next) {
+            fprintf(fptr, "%s\n", ptr -> username);
+            fprintf(fptr, "%s\n", ptr -> md5_auth);
+            for (ptr_slave = ptr -> slave; ptr_slave != NULL; ptr_slave = ptr_slave -> next) {
+                fprintf(fptr, "%s\n", ptr_slave -> website);
+                fprintf(fptr, "%s\n", ptr_slave -> email);
+                fprintf(fptr, "%s\n", ptr_slave -> password);
+            }
+            
+			if (ptr->next == NULL){ //kalo dia ini masteraccount terakhir
+				fprintf(fptr, "%s", penanda);
+			}else{//ngga perlu kan?
+				fprintf(fptr, "%s\n", penanda);
+			}
 
-						my_strcpy(temp_concat,ptr->username);
-						my_strcat(temp_concat,ptr->md5_auth);
-
-						md5(temp_concat,my_strlen(temp_concat),temp_md5);
-						free(temp_concat);
-
-						fprintf(fptr,"%s\n",temp_md5);
-
-						free(temp_md5);
-					}
-				} else if (choice == 2) {
-					access = -1;
-					break;
-				} else {
-					printf("Tolong masukkan input yang valid!\n");
-				}
-			} while (access != -1);
-		}
-	}
+        }
+        printf("\nFile berhasil dibuat!\n");
+        // klo dua ga lanjutin apa'
+    }
+    fclose(fptr);
+	return true;
 }
 
 //function untuk membaca file yang sebelumnya sudah disimpan
-void readFile(struct MasterAccount * head) {  
-    struct MasterAccount * temp, * ptr;
-    struct SlaveAccount * temp_slave, * ptr_slave;
-    unsigned char *checker = malloc(EMAIL_MAX*sizeof(unsigned char));
-	unsigned char *temp_md5 = NULL;
-	unsigned char *temp_concat = NULL;
-  FILE *fptr;
-    fptr = fopen(fileName, "r");
+void readFile(struct MasterAccount ** head) {  
+    struct MasterAccount * temp = NULL, * ptr = NULL;
+    struct SlaveAccount * temp_slave = NULL, * ptr_slave = NULL;
+    char *checker = malloc(EMAIL_MAX*sizeof(char));
 	
+  	FILE *fptr;
+    fptr = fopen(fileName, "r");
+	//apa jangan jangan segmentation faultnya yang di 33
     if (fptr != NULL) {
-        if (!ifFileNotNull(fptr)) {
+        if (ifFileNotNull(fptr)) {
             int access = 0, choice;
-            printf("File ditemukan!");
-            ptr = head;
-            while (fptr != EOF) {
+            printf("File ditemukan!\n");
+			fptr = fopen(fileName, "r");
+            while (fptr != NULL) {
                 temp = malloc(sizeof(struct MasterAccount));
-                fgets((char*)temp -> username, USERNAME_MAX, fptr);
-                fgets((char*)temp -> md5_auth, MD5_SIZE, fptr);
-                temp -> next = NULL;
+				temp -> next = NULL;
                 temp -> slave = NULL;
-
-				temp_md5 = malloc(MD5_SIZE*sizeof(unsigned char));
-				temp_concat = malloc((USERNAME_MAX+MD5_SIZE)*sizeof(unsigned char));
-
-				my_strcpy(temp_concat,temp->username);
-				my_strcat(temp_concat,temp->md5_auth);
-
-				md5(temp_concat,my_strlen(temp_concat),temp_md5);
-				free(temp_concat);
-                while (my_strcmp((unsigned char*)fgets((char*)checker, EMAIL_MAX, fptr), temp_md5)!=0) {
+				//fscanf(fptr,"%[^\n]hhu", temp->username);
+               fgets((char*)temp -> username, USERNAME_MAX, fptr);
+				printf("%s\n",temp->username);
+               fgets((char*)temp -> md5_auth, MD5_SIZE, fptr);
+			   //fscanf(fptr,"%[^\n]hhu", temp->md5_auth);
+				printf("%s\n",temp->md5_auth);
+				fgets(checker, EMAIL_MAX, fptr);
+				puts(checker);
+                
+				// iya coba aj
+				//printf("%s\n",temp->username); //gw coba debug
+				//printf("%s\n",temp->md5_auth);
+				//getchar();
+                while (my_strcmp((unsigned char*)fgets(checker, EMAIL_MAX, fptr), penanda) != 0) {
+					printf("%s\n",checker);
                     temp_slave = malloc(sizeof(struct SlaveAccount));
 					my_strcpy(temp_slave -> website, checker);
                     fgets((char*)temp_slave -> email, EMAIL_MAX, fptr);
@@ -116,19 +114,25 @@ void readFile(struct MasterAccount * head) {
                         ptr_slave = ptr_slave -> next;
                     }
                 }
-                if (head == NULL) {
-                    head = temp;
+				printf("Debugging\n"); // disini dibaca
+				
+                if (*head == NULL) {
+                    *head = temp;
                     ptr = temp;
                 } else {
                     ptr -> next = temp;
                     ptr = ptr -> next;
                 }
-				free(temp_md5);
             }
+		fclose(fptr);
         }
     } else {
-        printf("File Gagal Ditemukan!\n\n");
+        printf("File Gagal Ditemukan!\n");
+		printf("Tekan ENTER untuk melanjutkan\n");
+		getchar();
+		printf("\033[0;0H\033[2J"); //clear console replit	
     }
+	
 	free(checker);
 }
 

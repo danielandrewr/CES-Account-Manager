@@ -63,7 +63,7 @@ void Registrasi(struct MasterAccount **head){
 
 					my_strcat(temp_email,temp_password); //konkatenasi email dan password
 								
-					md5(temp_email,my_strlen(temp_email)+my_strlen(temp_password),ptr->md5_auth); //dijadikan MD5 authentication
+					md5(temp_email,my_strlen(temp_email),ptr->md5_auth); //dijadikan MD5 authentication
 					if(*head == NULL){
 						ptr->next = NULL;
 					}else{
@@ -329,7 +329,7 @@ bool Login_Success(struct MasterAccount *head, unsigned char *password){
 		printf("Menu\n1. Lampirkan semua akun\n2. Tambah akun\n3. Cari akun\n4. Delete akun\n5. Delete akun master\n6. Logout\n");
     printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 		printf("Masukkan pilihan: ");
-		inputAngka(&pilihan, 1,4);
+		inputAngka(&pilihan, 1,6);
 		switch (pilihan){
 			case 1: Show_All_Slave(head->slave,password);
 					break;
@@ -341,10 +341,10 @@ bool Login_Success(struct MasterAccount *head, unsigned char *password){
 					break;
 			case 5: deleted = Delete_Account(head->slave);
 					break;
-
+			case 6: break;
 		}
 		 
-	}while (pilihan != 6);
+	}while ( pilihan < 5 ) ;
 	free(decrypted_username);
 	
 	return deleted;
@@ -382,7 +382,7 @@ bool Login(struct MasterAccount **head) { //function untuk mengecek login
 		
 		my_strcat(temp_email,temp_password);
 
-		md5(temp_email,my_strlen(temp_email)+my_strlen(temp_password),temp_md5);
+		md5(temp_email,my_strlen(temp_email),temp_md5);
 		free(temp_email);
 
 		for (ptr = *head; ptr != NULL; prev = ptr, ptr = ptr->next){
@@ -421,8 +421,7 @@ int main(void) {    //main function
 	
 	struct MasterAccount *head = NULL;
 	int menu;
-  FILE *fptr;
-	readFile(head);
+	readFile(&head);
 	do{
     printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 		printf("Selamat datang di Proglan Account Manager!\n");
