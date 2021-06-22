@@ -1,7 +1,7 @@
 // fungsi ngecek filenya ada isi
-bool ifFileNotNull(FILE *fptr, char fileName[50]) {
+bool ifFileNotNull() {
 	bool fileNotNull = false;
-
+  FILE *fptr;
 	fptr = fopen(fileName, "r");
 	if (fptr != NULL) {
 		fseek(fptr, 0, SEEK_END);
@@ -14,13 +14,13 @@ bool ifFileNotNull(FILE *fptr, char fileName[50]) {
 	return fileNotNull;
 }
 
-void createFileWithMasterAccount(FILE *fptr, struct MasterAccount *head, char fileName[50]) { //function untuk menciptakn file baru untuk disimpah, dan akan digunakan pada run kedepannya
+void createFileWithMasterAccount(struct MasterAccount *head) { //function untuk menciptakn file baru untuk disimpah, dan akan digunakan pada run kedepannya
 	struct MasterAccount *ptr = NULL;
 	struct SlaveAccount *ptr_slave = NULL;
 	unsigned char *temp_md5 = NULL;
 	unsigned char *temp_concat = NULL;
 	int choice;
-	
+	FILE *fptr
 	fptr = fopen(fileName, "w");
 
 	if (fptr != NULL) {
@@ -59,12 +59,13 @@ void createFileWithMasterAccount(FILE *fptr, struct MasterAccount *head, char fi
 	}
 }
 
-void readFile(FILE * fptr, struct MasterAccount * head, char fileName[50]) {  //function untuk membaca file yang sebelumnya sudah disimpah
+void readFile(struct MasterAccount * head) {  //function untuk membaca file yang sebelumnya sudah disimpan
     struct MasterAccount * temp, * ptr;
     struct SlaveAccount * temp_slave, * ptr_slave;
     unsigned char *checker = malloc(EMAIL_MAX*sizeof(unsigned char));
 	unsigned char *temp_md5 = NULL;
 	unsigned char *temp_concat = NULL;
+  FILE *fptr;
     fptr = fopen(fileName, "r");
 	
     if (fptr != NULL) {

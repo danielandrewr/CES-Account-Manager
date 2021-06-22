@@ -5,7 +5,8 @@
 #include "md5.h"
 #include "get_input.h"
 #include "encipher.h"
-#define fileName "account.txt"
+#include "filehandler.h"
+#define fileName "Encrypted Database.txt"
 
 #define USERNAME_MIN 5
 #define USERNAME_MAX 50
@@ -411,7 +412,8 @@ bool Login(struct MasterAccount **head) { //function untuk mengecek login
 int main(void) {    //main function
 	struct MasterAccount *head = NULL;
 	int menu;
-	
+  FILE *fptr;
+	readFile(head);
 	do{
     printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 		printf("Selamat datang di Proglan Account Manager!\n");
@@ -436,7 +438,8 @@ int main(void) {    //main function
       	break;
 		}
 		printf("\033[0;0H\033[2J"); //clear console replit		
-	} while (menu != 3));
+	} while (menu != 3);
+  createFileWithMasterAccount(head);
 	return 0;
 }
 
