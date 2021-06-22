@@ -14,7 +14,7 @@ bool ifFileNotNull(FILE *fptr, char fileName[50]) {
 	return fileNotNull;
 }
 
-void createFileWithMasterAccount(FILE *fptr, struct MasterAccount *head, char fileName[50]) {
+void createFileWithMasterAccount(FILE *fptr, struct MasterAccount *head, char fileName[50]) { //function untuk menciptakn file baru untuk disimpah, dan akan digunakan pada run kedepannya
 	struct MasterAccount *ptr = NULL;
 	struct SlaveAccount *ptr_slave = NULL;
 	unsigned char *temp_md5 = NULL;
@@ -59,7 +59,7 @@ void createFileWithMasterAccount(FILE *fptr, struct MasterAccount *head, char fi
 	}
 }
 
-void readFile(FILE * fptr, struct MasterAccount * head, char fileName[50]) {
+void readFile(FILE * fptr, struct MasterAccount * head, char fileName[50]) {  //function untuk membaca file yang sebelumnya sudah disimpah
     struct MasterAccount * temp, * ptr;
     struct SlaveAccount * temp_slave, * ptr_slave;
     unsigned char *checker = malloc(EMAIL_MAX*sizeof(unsigned char));
