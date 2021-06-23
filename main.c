@@ -423,8 +423,15 @@ int main(void) {    //main function
 	int menu;
 	readFile(&head);
 	do{
-    printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
-		printf("Selamat datang di Proglan Account Manager!\n");
+    printf("\n             _____________________________\n");
+    printf("=~=~=~=~=~=~=|                            |=~=~=~=~=~=~=\n");
+    printf("=~=~=~=~=~=~=|     Selamat datang         |=~=~=~=~=~=~=\n");
+    printf("=~=~=~=~=~=~=|       di Proglan           |=~=~=~=~=~=~=\n");
+    printf("=~=~=~=~=~=~=|     Account Manager!       |=~=~=~=~=~=~=\n");
+    printf("=~=~=~=~=~=~=|                            |=~=~=~=~=~=~=\n");
+    printf("=~=~=~=~=~=~=______________________________=~=~=~=~=~=~=\n");
+    printf("\n\n");
+    	printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
  		printf("Silahkan pilih salah satu menu\n");
 		printf("Menu\n1. Register\n2. Login\n3. Exit\n");
     printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
