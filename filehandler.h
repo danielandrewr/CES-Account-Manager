@@ -4,6 +4,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 const unsigned char penanda[] = "Z6@z#6iHx@4U%ncK^m$^";
+//fungsi mencetak nilai hex dari string
+void fprints(FILE *fptr,char *ptr){
+   for (c=0;s[c] != '\0';c++) {
+      fprintf(fptr,"%2.2x", ptr[c]);
+   }
+   fprintf(fptr,"\n");
+}
 // fungsi ngecek filenya ada isi
 bool ifFileNotNull(FILE *fptr) {
 	bool fileNotNull = false;
@@ -46,18 +53,18 @@ bool createFileWithMasterAccount(struct MasterAccount * head) {
         } //sama aja gasi
         fptr = fopen(fileName, "w");
         for (ptr = head; ptr != NULL; ptr = ptr -> next) {
-            fprintf(fptr, "%s\n", ptr -> username);
-            fprintf(fptr, "%s\n", ptr -> md5_auth);
+            fprints(fptr,ptr -> username);
+            fprints(fptr,ptr -> md5_auth);
             for (ptr_slave = ptr -> slave; ptr_slave != NULL; ptr_slave = ptr_slave -> next) {
-                fprintf(fptr, "%s\n", ptr_slave -> website);
-                fprintf(fptr, "%s\n", ptr_slave -> email);
-                fprintf(fptr, "%s\n", ptr_slave -> password);
+                fprints(fptr, ptr_slave -> website);
+                fprints(fptr, ptr_slave -> email);
+                fprints(fptr, ptr_slave -> password);
             }
             
 			if (ptr->next == NULL){ //kalo dia ini masteraccount terakhir
-				fprintf(fptr, "%s", penanda);
+				fprints(fptr, penanda);
 			}else{//ngga perlu kan?
-				fprintf(fptr, "%s\n", penanda);
+				fprints(fptr, penanda);//sori yang ini blm ngeh bedanya apa sama yang diatas harusnya \n
 			}
 
         }
