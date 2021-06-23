@@ -55,7 +55,7 @@ void Registrasi(struct MasterAccount ** head) {
         ptr = (struct MasterAccount * ) malloc(sizeof(struct MasterAccount));
         ptr -> slave = NULL;
 
-        system("cls"); //clear console replit
+        system("cls"); //clear console
         printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
         printf("\nMasukkan username akun master: ");
         inputString(ptr -> username, USERNAME_MIN, USERNAME_MAX); // username length minimal 5, max 50
@@ -94,7 +94,7 @@ void Registrasi(struct MasterAccount ** head) {
         ptr = NULL;
         temp_email = NULL;
         temp_password = NULL;
-        system("cls"); //clear console replit
+        system("cls"); //clear console
     } while (yakin == 2);
 }
 //funtion untuk menambahkan akun slave yang langsung berhubung dengan akun master
@@ -209,7 +209,7 @@ bool Cari_Slave(struct SlaveAccount * head_slave,
         printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
         printf("Ingin mencari lagi?\n1. Ya\n2. Tidak\n");
         inputAngka( & again, 1, 2);
-        system("cls"); //clear console replit
+        system("cls"); //clear console
 
         free(decrypted_website);
         free(decrypted_email);
@@ -324,7 +324,7 @@ bool Show_All_Slave(struct SlaveAccount * head_slave,
 
     printf("Tekan ENTER untuk kembali\n");
     getchar();
-    system("cls"); //clear console replit
+    system("cls"); //clear console
 
     return false;
 }
@@ -361,7 +361,7 @@ bool Login_Success(struct MasterAccount * head, unsigned char * password) {
     int pilihan;
 
     do {
-        system("cls"); //clear console replit
+        system("cls"); //clear console
         printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
         printf("Selamat datang, %s!\n", decrypted_username);
         printf("Menu\n");
@@ -506,7 +506,7 @@ int main(void) { //main function
         default:
             break;
         }
-        system("cls"); //clear console replit		
+        system("cls"); //clear console
     } while (menu != 3);
 
     createFileWithMasterAccount(head);

@@ -41,16 +41,9 @@ const unsigned int r[] = {7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17
 void to_bytes(unsigned int val, unsigned char *bytes)
 {
 	register unsigned char i;
-	//pragma omp parallel for
 	for (i = 0; i<4; i++){
 		bytes[i] = (unsigned char) (val >> (i*8));
 	}
-	/*
-    bytes[0] = (unsigned char) val;
-    bytes[1] = (unsigned char) (val >> 8);
-    bytes[2] = (unsigned char) (val >> 16);
-    bytes[3] = (unsigned char) (val >> 24);
-	*/
 }
  
 unsigned int to_unsignedchar(const unsigned char *bytes)

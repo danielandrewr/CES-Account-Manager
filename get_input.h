@@ -43,7 +43,6 @@ void inputString(unsigned char * string,
     do {
         scanf(" %255[^\n]hhu", input);
         fflush(stdin);
-        //ntar pakein pragma omp for reduction bisa ga ni
         count = my_strlen(input);
         if (count < batas_bawah) {
             printf("Input yang diberikan minimal %d karakter. Silakan input lagi\n\n", batas_bawah);
