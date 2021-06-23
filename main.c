@@ -82,7 +82,7 @@ void Registrasi(struct MasterAccount **head){
 		free(temp_password);
 		ptr = NULL;
 
-		printf("\033[0;0H\033[2J"); //clear console di repl
+		system("cls");
 	}while (yakin == 2);
 }
 //funtion untuk menambahkan akun slave yang langsung berhubung dengan akun master
@@ -190,7 +190,7 @@ bool Cari_Slave(struct SlaveAccount *head_slave, const unsigned char *password){
 		}printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 		printf("Ingin mencari lagi?\n1. Ya\n2. Tidak\n");
 		inputAngka(&again,1,2);
-		printf("\033[0;0H\033[2J"); //clear console di repl
+		system("cls");
 		
 		free(decrypted_website);
 		free(decrypted_email);
@@ -294,7 +294,7 @@ bool Show_All_Slave(struct SlaveAccount *head_slave, const unsigned char *passwo
 
 	printf("Tekan ENTER untuk kembali\n");
 	getchar();
-	printf("\033[0;0H\033[2J"); //clear console replit
+	system("cls");
 
 	return false;
 }
@@ -331,7 +331,7 @@ bool Login_Success(struct MasterAccount *head, unsigned char *password){
 	int pilihan;
 
 	do{
-		printf("\033[0;0H\033[2J"); //clear console replit
+		system("cls");
     printf("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
 		printf("Selamat datang, %s!\n",decrypted_username);
 		printf("Menu");
@@ -462,7 +462,7 @@ int main(void) {    //main function
 			default: 
       	break;
 		}
-		printf("\033[0;0H\033[2J"); //clear console replit		
+		system("cls");		
 	} while (menu != 3);
 	
     createFileWithMasterAccount(head);

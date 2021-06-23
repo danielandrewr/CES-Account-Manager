@@ -1,3 +1,7 @@
+/*
+header file ini berisi fungsi enkripsi dan dekripsi untuk mengamankan file simpanan,
+dan bisa dibuka kembali dan menunjukan isinya (dilengkapi dengan fungsi tambahan).
+*/
 #ifndef ENCIPHER
 #define ENCIPHER
 
@@ -19,54 +23,56 @@ int mod(int a,int b){ //function for modulo, since C can't moduled negative numb
 		return a%b;
 	}
 }
+//encryption function
 char encrypt(unsigned char * M, const unsigned char * key) {
     int maksKey, maksM;
-    //#pragma omp single
-    //{
+    #pragma omp single
+    {
     maksKey = strlen(key);
     maksM = strlen(M);
-    //}
-    //#pragma omp parallel shared(maksKey,maksM)
-    //{
+    }
+    #pragma omp parallel shared(maksKey,maksM)
+    {
     int from, to, i, j;
-    //#pragma omp for
+    #pragma omp for
     for (i = 0; i < maksM; i += maksKey + 1) {
         from = i;
         to = i + maksKey;
-        //#pragma omp task
-        //{
+        #pragma omp task
+        {
         for (j = from; j <= to; j++) {
             M[j] = mod((M[j] + key[j % maksKey]), 256);
             M[j] = sbox(M[j]);
         }
-        //}
         }
-    //}
+        }
+    }
     return 0;
 }
+//decryption function
 char decrypt(unsigned char * M, const unsigned char * key) {
     int maksKey, maksM;
-    //#pragma omp single
-    //{
+    #pragma omp single
+    {
     maksKey = strlen(key);
     maksM = strlen(M);
-    //}
-    //#pragma omp parallel shared(maksKey,maksM,M,key)
-    //{
+    }
+    #pragma omp parallel shared(maksKey,maksM,M,key)
+    {
     int from, to, i, j;
-    //#pragma omp for
+    #pragma omp for
     for (i = 0; i < maksM; i += maksKey + 1) {
         from = i;
         to = i + maksKey;
-        //#pragma omp taskwait
-        //{
+        #pragma omp taskwait
+        {
         for (j = from; j <= to; j++) {
             M[j] = rsbox(M[j]); //inverse subbox
             M[j] = mod((M[j] - key[j % maksKey]), 256); //vigenere function
         }
-        //}
+        }
     }
-    //}
+    }
     return 0;
 }
 #endif //ENCIPHER

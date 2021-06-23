@@ -1,3 +1,7 @@
+/* 
+header ini berisi fungsi - fungsi file handling untuk menyimpan dan membuka akun
+dalam suatu file database. 
+*/
 #ifndef FILEHANDLER
 #define FILEHANDLER
 
@@ -18,7 +22,7 @@ unsigned char *Fgets(FILE *fptr, unsigned char *string){
 	temp2[2] = '\0';
 	fgets(temp,EMAIL_MAX,fptr);
 	register int i, j, len = my_strlen((unsigned char*)temp);
-	//#pragma omp parallel for private(i,j) shared(len,temp,temp2,string)
+	#pragma omp parallel for private(i,j) shared(len,temp,temp2,string)
 	for (i = 0, j = 0; i<len; i +=2,j++){
 		temp2[0] = temp[i];
 		temp2[1] = temp[i+1];
@@ -36,7 +40,6 @@ bool ifFileNotNull(FILE *fptr) {
 	if (fptr != NULL) {
 		fseek(fptr, 0, SEEK_END);
 		int fsize = ftell(fptr);
-		// printf("%d", fsize);
 		if (fsize != 0)
 			fileNotNull = true;
 
@@ -47,7 +50,7 @@ bool ifFileNotNull(FILE *fptr) {
 }
 
 
-//function untuk menciptakn file baru untuk disimpah, dan akan digunakan pada run kedepannya
+//function untuk menciptakan file baru untuk disimpan, dan akan digunakan pada run kedepannya
 bool createFileWithMasterAccount(struct MasterAccount * head) {
     struct MasterAccount * ptr = NULL;
     struct SlaveAccount * ptr_slave = NULL;
@@ -95,7 +98,6 @@ void readFile(struct MasterAccount ** head) {
 	
   	FILE *fptr;
     fptr = fopen(fileName, "r");
-	//apa jangan jangan segmentation faultnya yang di 33
     if (fptr != NULL) {
         if (ifFileNotNull(fptr)) {
             int access = 0, choice;
@@ -138,7 +140,7 @@ void readFile(struct MasterAccount ** head) {
         printf("File Gagal Ditemukan!\n");
 		printf("Tekan ENTER untuk melanjutkan\n");
 		getchar();
-		printf("\033[0;0H\033[2J"); //clear console replit	
+		system("cls");
     }
 	
 	free(checker);

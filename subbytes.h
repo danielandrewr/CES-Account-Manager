@@ -1,3 +1,7 @@
+/*
+fungsi ini berfungsi untuk melakukan subtitusi bytes, sebagai bagian dari
+enkripsi dan dekripsi.
+*/
 #ifndef SUBBYTES
 #define SUBBYTES
 
