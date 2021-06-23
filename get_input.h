@@ -4,9 +4,7 @@ Berisi scanf khusus integer dan scanf khusus string yang diberi batas bawah
 dan batas atas.
 */
 #ifndef GET_INPUT
-#define GET_INPUT
-
-#include <stdio.h>
+#define GET_INPUT#include <stdio.h>
 
 #include <stdlib.h>
 
@@ -15,7 +13,6 @@ int clean_stdin() {
     while (getchar() != '\n');
     return 1;
 }
-
 //Fungsi khusus integer yang akan mendeteksi jika diinput huruf.
 void inputInteger(int * variabel) {
     unsigned char dummy;
@@ -23,14 +20,13 @@ void inputInteger(int * variabel) {
         puts("(* - *)! Hanya boleh memasukkan angka. Silakan masukkan angka\n");
     }
 }
-
 //Fungsi yang mendeteksi besarnya input integer di atas.
 void inputAngka(int * angka,
     const int batas_bawah,
         const int batas_atas) {
     do {
         inputInteger(angka);
-        if ( * angka < batas_bawah ) {
+        if ( * angka < batas_bawah) {
             printf("(> o <)! Angka minimal adalah %d. Masukkan angka dengan benar!\n", batas_bawah);
         } else if ( * angka > batas_atas) {
             printf("(> o <)! Angka maksimal adalah %d. Masukkan angka dengan benar!\n", batas_atas);
@@ -58,5 +54,6 @@ void inputString(unsigned char * string,
         }
     } while (count < batas_bawah || count > batas_atas);
     free(input);
+    input = NULL;
 }
 #endif //GET_INPUT

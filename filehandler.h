@@ -7,6 +7,7 @@ dalam suatu file database.
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "parallel_string.h"
 const unsigned char penanda[] = "Z6@z#6iHx@4U%ncK^m$^";
 //fungsi mencetak nilai hex dari string
 void fprints(FILE *fptr,const unsigned char *string){
@@ -14,15 +15,13 @@ void fprints(FILE *fptr,const unsigned char *string){
    for (i=0;string[i] != '\0';i++) {
       fprintf(fptr,"%2.2x", string[i]);
    }
-   fprintf(fptr,"\n");
 }
 unsigned char *Fgets(FILE *fptr, unsigned char *string){
-	char *temp = malloc(EMAIL_MAX*(sizeof(char)));
-	unsigned char *temp2 = malloc(3*sizeof(unsigned char));
+	char *temp = (char*) malloc(EMAIL_MAX*(sizeof(char)));
+	unsigned char *temp2 = (unsigned char*)malloc(3*sizeof(unsigned char));
 	temp2[2] = '\0';
 	fgets(temp,EMAIL_MAX,fptr);
 	register int i, j, len = my_strlen((unsigned char*)temp);
-	#pragma omp parallel for private(i,j) shared(len,temp,temp2,string)
 	for (i = 0, j = 0; i<len; i +=2,j++){
 		temp2[0] = temp[i];
 		temp2[1] = temp[i+1];
@@ -30,6 +29,8 @@ unsigned char *Fgets(FILE *fptr, unsigned char *string){
 	}
 	free(temp);
 	free(temp2);
+	temp = NULL;
+	temp2 = NULL;
 	return string;
 }
 // fungsi ngecek filenya ada isi
@@ -74,14 +75,21 @@ bool createFileWithMasterAccount(struct MasterAccount * head) {
         fptr = fopen(fileName, "w");
         for (ptr = head; ptr != NULL; ptr = ptr -> next) {
             fprints(fptr,ptr -> username);
+            fprintf(fptr,"\n");
             fprints(fptr,ptr -> md5_auth);
+            fprintf(fptr,"\n");
             for (ptr_slave = ptr -> slave; ptr_slave != NULL; ptr_slave = ptr_slave -> next) {
                 fprints(fptr, ptr_slave -> website);
+                fprintf(fptr,"\n");
                 fprints(fptr, ptr_slave -> email);
+                fprintf(fptr,"\n");
                 fprints(fptr, ptr_slave -> password);
+                fprintf(fptr,"\n");
             }
             fprints(fptr, penanda);
-
+			if (ptr->next != NULL){
+				fprintf(fptr,"\n");
+			}
         }
         printf("\nFile berhasil dibuat!\n");
         
@@ -94,7 +102,7 @@ bool createFileWithMasterAccount(struct MasterAccount * head) {
 void readFile(struct MasterAccount ** head) {  
     struct MasterAccount * temp = NULL, * ptr = NULL;
     struct SlaveAccount * temp_slave = NULL, * ptr_slave = NULL;
-    unsigned char *checker = malloc(EMAIL_MAX*sizeof(char));
+    unsigned char *checker = (unsigned char*) malloc(EMAIL_MAX*sizeof(char));
 	
   	FILE *fptr;
     fptr = fopen(fileName, "r");
@@ -104,7 +112,7 @@ void readFile(struct MasterAccount ** head) {
             printf("File ditemukan!\n");
 			fptr = fopen(fileName, "r");
             while (!feof(fptr)) {
-                temp = malloc(sizeof(struct MasterAccount));
+                temp =(struct MasterAccount*) malloc(sizeof(struct MasterAccount));
 				temp -> next = NULL;
                 temp -> slave = NULL;
 				
@@ -112,7 +120,7 @@ void readFile(struct MasterAccount ** head) {
 				Fgets(fptr,temp->md5_auth);
              
                 while (my_strcmp(Fgets(fptr, checker), penanda) != 0) {
-                    temp_slave = malloc(sizeof(struct SlaveAccount));
+                    temp_slave = (struct SlaveAccount*)malloc(sizeof(struct SlaveAccount));
 					my_strcpy(temp_slave -> website, checker);
                     Fgets(fptr,temp_slave->email);
                     Fgets(fptr,temp_slave->password);
@@ -144,6 +152,7 @@ void readFile(struct MasterAccount ** head) {
     }
 	
 	free(checker);
+	checker = NULL;
 }
 
 #endif //FILEHANDLER
