@@ -19,11 +19,13 @@ int mod(int a,int b){ //function for modulo, since C can't moduled negative numb
 		return a%b;
 	}
 }
-char encrypt(unsigned char * M,
-    const unsigned char * key) {
+char encrypt(unsigned char * M, const unsigned char * key) {
     int maksKey, maksM;
-    maksKey = my_strlen(key);
-    maksM = my_strlen(M);
+    //#pragma omp single
+    //{
+    maksKey = strlen(key);
+    maksM = strlen(M);
+    //}
     //#pragma omp parallel shared(maksKey,maksM)
     //{
     int from, to, i, j;
@@ -34,21 +36,21 @@ char encrypt(unsigned char * M,
         //#pragma omp task
         //{
         for (j = from; j <= to; j++) {
-            M[j] -= 31; //menghindari operational ASCII 0-31
-            M[j] = mod((M[j] + key[j % maksKey]), 225);
+            M[j] = mod((M[j] + key[j % maksKey]), 256);
             M[j] = sbox(M[j]);
-            M[j] += 31;
         }
         //}
-        //}
-    }
+        }
+    //}
     return 0;
 }
-char decrypt(unsigned char * M,
-    const unsigned char * key) {
+char decrypt(unsigned char * M, const unsigned char * key) {
     int maksKey, maksM;
-    maksKey = my_strlen(key);
-    maksM = my_strlen(M);
+    //#pragma omp single
+    //{
+    maksKey = strlen(key);
+    maksM = strlen(M);
+    //}
     //#pragma omp parallel shared(maksKey,maksM,M,key)
     //{
     int from, to, i, j;
@@ -56,13 +58,11 @@ char decrypt(unsigned char * M,
     for (i = 0; i < maksM; i += maksKey + 1) {
         from = i;
         to = i + maksKey;
-        //#pragma omp task
+        //#pragma omp taskwait
         //{
         for (j = from; j <= to; j++) {
-            M[j] -= 31; //menghindari operational ASCII 0-31
             M[j] = rsbox(M[j]); //inverse subbox
             M[j] = mod((M[j] - key[j % maksKey]), 256); //vigenere function
-            M[j] += 31;
         }
         //}
     }

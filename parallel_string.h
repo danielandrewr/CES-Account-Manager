@@ -7,6 +7,7 @@ jika memungkinkan.
 #define PARALLEL_STRING
 //Fungsi strlen. Tidak bisa diparalelkan.
 int my_strlen(const unsigned char *string){
+	//#pragma omp single
 	register int i;
 	for(i = 0; string[i] != '\0'; i++);
 	return i;
@@ -44,6 +45,7 @@ int my_strcmp(const unsigned char *str1,const  unsigned char *str2){
 	//#pragma omp parallel for shared(flag)
 	for(i = 0; i<len_str1; i++){ 
 		if(str1[i] != str2[i]){
+			//#pragma omp critical
 			flag = 0;
 		}
 		if(!flag){
@@ -62,7 +64,7 @@ int my_strcasestr(const unsigned char * string, const unsigned char * toFind) {
   register int tFlen = my_strlen(toFind);
   register int found = 0, s,t;
   
-
+//#pragma omp single
   if (slen >= tFlen) {
     for ( s = 0, t = 0; s < slen; s++) {
       do {

@@ -18,6 +18,7 @@ unsigned char *Fgets(FILE *fptr, unsigned char *string){
 	temp2[2] = '\0';
 	fgets(temp,EMAIL_MAX,fptr);
 	register int i, j, len = my_strlen((unsigned char*)temp);
+	//#pragma omp parallel for private(i,j) shared(len,temp,temp2,string)
 	for (i = 0, j = 0; i<len; i +=2,j++){
 		temp2[0] = temp[i];
 		temp2[1] = temp[i+1];
@@ -66,7 +67,7 @@ bool createFileWithMasterAccount(struct MasterAccount * head) {
                 fclose(fptr);
                 return false;
             }
-        } //sama aja gasi
+        } 
         fptr = fopen(fileName, "w");
         for (ptr = head; ptr != NULL; ptr = ptr -> next) {
             fprints(fptr,ptr -> username);
@@ -76,16 +77,11 @@ bool createFileWithMasterAccount(struct MasterAccount * head) {
                 fprints(fptr, ptr_slave -> email);
                 fprints(fptr, ptr_slave -> password);
             }
-            
-			if (ptr->next == NULL){ //kalo dia ini masteraccount terakhir
-				fprints(fptr, penanda);
-			}else{//ngga perlu kan?
-				fprints(fptr, penanda);//sori yang ini blm ngeh bedanya apa sama yang diatas harusnya \n
-			}
+            fprints(fptr, penanda);
 
         }
         printf("\nFile berhasil dibuat!\n");
-        // klo dua ga lanjutin apa'
+        
     }
     fclose(fptr);
 	return true;
@@ -109,23 +105,11 @@ void readFile(struct MasterAccount ** head) {
                 temp = malloc(sizeof(struct MasterAccount));
 				temp -> next = NULL;
                 temp -> slave = NULL;
-				//fscanf(fptr,"%[^\n]hhu", temp->username);
+				
 				Fgets(fptr,temp->username);
-              // fgets((char*)temp -> username, USERNAME_MAX, fptr);
-				//printf("%s\n",temp->username);
 				Fgets(fptr,temp->md5_auth);
-             //  fgets((char*)temp -> md5_auth, MD5_SIZE, fptr);
-			   //fscanf(fptr,"%[^\n]hhu", temp->md5_auth);
-				//printf("%s\n",temp->md5_auth);
-				//fgets(checker, EMAIL_MAX, fptr);
-				//puts(checker);
-                
-				// iya coba aj
-				//printf("%s\n",temp->username); //gw coba debug
-				//printf("%s\n",temp->md5_auth);
-				//getchar();
+             
                 while (my_strcmp(Fgets(fptr, checker), penanda) != 0) {
-					//printf("%s\n",checker);
                     temp_slave = malloc(sizeof(struct SlaveAccount));
 					my_strcpy(temp_slave -> website, checker);
                     Fgets(fptr,temp_slave->email);
@@ -139,7 +123,6 @@ void readFile(struct MasterAccount ** head) {
                         ptr_slave = ptr_slave -> next;
                     }
                 }
-				printf("Debugging\n"); // disini dibaca
 				
                 if (*head == NULL) {
                     *head = temp;

@@ -40,14 +40,22 @@ const unsigned int r[] = {7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17
  
 void to_bytes(unsigned int val, unsigned char *bytes)
 {
+	register unsigned char i;
+	//pragma omp parallel for
+	for (i = 0; i<4; i++){
+		bytes[i] = (unsigned char) (val >> (i*8));
+	}
+	/*
     bytes[0] = (unsigned char) val;
     bytes[1] = (unsigned char) (val >> 8);
     bytes[2] = (unsigned char) (val >> 16);
     bytes[3] = (unsigned char) (val >> 24);
+	*/
 }
  
 unsigned int to_unsignedchar(const unsigned char *bytes)
 {
+	
     return (unsigned int) bytes[0]
         | ((unsigned int) bytes[1] << 8)
         | ((unsigned int) bytes[2] << 16)
@@ -83,6 +91,8 @@ void md5(const unsigned char *initial_msg, size_t initial_len, unsigned char *di
     msg = (unsigned char*)malloc(new_len + 8);
     my_strcpy(msg, initial_msg);
     msg[initial_len] = 0x80; // append the "1" bit; most significant bit is "first"
+
+	//#pragma omp parallel for private(offset) shared(initial_len,new_len)
     for (offset = initial_len + 1; offset < new_len; offset++)
         msg[offset] = 0; // append "0" bits
  
@@ -96,7 +106,7 @@ void md5(const unsigned char *initial_msg, size_t initial_len, unsigned char *di
     for(offset=0; offset<new_len; offset += 64) {
  
         // break chunk into sixteen 32-bit words w[j], 0 ≤ j ≤ 15
-				//ini kayaknya bisa diparalelin #pragma omp for
+		//ini kayaknya bisa diparalelin #pragma omp for
         for (i = 0; i < 16; i++)
             w[i] = to_unsignedchar(msg + offset + i*4);
  
@@ -107,6 +117,7 @@ void md5(const unsigned char *initial_msg, size_t initial_len, unsigned char *di
         d = h3;
  
         // Main loop:
+		//#pragma omp single
         for(i = 0; i<64; i++) {
  
             if (i < 16) {
