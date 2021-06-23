@@ -5,11 +5,27 @@
 #include <stdlib.h>
 const unsigned char penanda[] = "Z6@z#6iHx@4U%ncK^m$^";
 //fungsi mencetak nilai hex dari string
-void fprints(FILE *fptr,char *ptr){
-   for (c=0;s[c] != '\0';c++) {
-      fprintf(fptr,"%2.2x", ptr[c]);
+void fprints(FILE *fptr,const unsigned char *string){
+	register int i;
+   for (i=0;string[i] != '\0';i++) {
+      fprintf(fptr,"%2.2x", string[i]);
    }
    fprintf(fptr,"\n");
+}
+unsigned char *Fgets(FILE *fptr, unsigned char *string){
+	char *temp = malloc(EMAIL_MAX*(sizeof(char)));
+	unsigned char *temp2 = malloc(3*sizeof(unsigned char));
+	temp2[2] = '\0';
+	fgets(temp,EMAIL_MAX,fptr);
+	register int i, j, len = my_strlen((unsigned char*)temp);
+	for (i = 0, j = 0; i<len; i +=2,j++){
+		temp2[0] = temp[i];
+		temp2[1] = temp[i+1];
+		string[j] = (unsigned char)strtol((char*)temp2, NULL, 16);
+	}
+	free(temp);
+	free(temp2);
+	return string;
 }
 // fungsi ngecek filenya ada isi
 bool ifFileNotNull(FILE *fptr) {
@@ -79,7 +95,7 @@ bool createFileWithMasterAccount(struct MasterAccount * head) {
 void readFile(struct MasterAccount ** head) {  
     struct MasterAccount * temp = NULL, * ptr = NULL;
     struct SlaveAccount * temp_slave = NULL, * ptr_slave = NULL;
-    char *checker = malloc(EMAIL_MAX*sizeof(char));
+    unsigned char *checker = malloc(EMAIL_MAX*sizeof(char));
 	
   	FILE *fptr;
     fptr = fopen(fileName, "r");
@@ -89,29 +105,31 @@ void readFile(struct MasterAccount ** head) {
             int access = 0, choice;
             printf("File ditemukan!\n");
 			fptr = fopen(fileName, "r");
-            while (fptr != NULL) {
+            while (!feof(fptr)) {
                 temp = malloc(sizeof(struct MasterAccount));
 				temp -> next = NULL;
                 temp -> slave = NULL;
 				//fscanf(fptr,"%[^\n]hhu", temp->username);
-               fgets((char*)temp -> username, USERNAME_MAX, fptr);
-				printf("%s\n",temp->username);
-               fgets((char*)temp -> md5_auth, MD5_SIZE, fptr);
+				Fgets(fptr,temp->username);
+              // fgets((char*)temp -> username, USERNAME_MAX, fptr);
+				//printf("%s\n",temp->username);
+				Fgets(fptr,temp->md5_auth);
+             //  fgets((char*)temp -> md5_auth, MD5_SIZE, fptr);
 			   //fscanf(fptr,"%[^\n]hhu", temp->md5_auth);
-				printf("%s\n",temp->md5_auth);
-				fgets(checker, EMAIL_MAX, fptr);
-				puts(checker);
+				//printf("%s\n",temp->md5_auth);
+				//fgets(checker, EMAIL_MAX, fptr);
+				//puts(checker);
                 
 				// iya coba aj
 				//printf("%s\n",temp->username); //gw coba debug
 				//printf("%s\n",temp->md5_auth);
 				//getchar();
-                while (my_strcmp((unsigned char*)fgets(checker, EMAIL_MAX, fptr), penanda) != 0) {
-					printf("%s\n",checker);
+                while (my_strcmp(Fgets(fptr, checker), penanda) != 0) {
+					//printf("%s\n",checker);
                     temp_slave = malloc(sizeof(struct SlaveAccount));
 					my_strcpy(temp_slave -> website, checker);
-                    fgets((char*)temp_slave -> email, EMAIL_MAX, fptr);
-                    fgets((char*)temp_slave -> password, PASSWORD_MAX, fptr);
+                    Fgets(fptr,temp_slave->email);
+                    Fgets(fptr,temp_slave->password);
                     temp_slave -> next = NULL;
                     if (temp -> slave == NULL) {
                         temp -> slave = temp_slave;
