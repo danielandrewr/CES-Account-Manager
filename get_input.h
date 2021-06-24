@@ -4,9 +4,13 @@ Berisi scanf khusus integer dan scanf khusus string yang diberi batas bawah
 dan batas atas.
 */
 #ifndef GET_INPUT
-#define GET_INPUT#include <stdio.h>
+#define GET_INPUT
+
+#include <stdio.h>
 
 #include <stdlib.h>
+
+#inlude "parallel_string.h"
 
 //Fungsi yang berguna untuk membersihan STDIN.
 int clean_stdin() {

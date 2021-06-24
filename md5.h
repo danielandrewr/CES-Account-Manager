@@ -9,6 +9,7 @@ header <stdint.h>
 
 #include <stdlib.h>
 #include "parallel_string.h"
+#include <omp.h>
 
 // Constants are the integer part of the sines of integers (in radians) * 2^32.
 const unsigned int k[64] = {

@@ -5,6 +5,9 @@ jika memungkinkan.
 */
 #ifndef PARALLEL_STRING
 #define PARALLEL_STRING
+
+#include <omp.h>
+
 //Fungsi strlen. Tidak bisa diparalelkan.
 int my_strlen(const unsigned char * string) {
     register int i;
@@ -17,8 +20,7 @@ void my_strcpy(unsigned char * destination,
     const unsigned char * source) { //parameter ketiga beda 
     register int i, size_source = my_strlen(source);
 
-    #pragma omp parallel
-    for
+    #pragma omp parallel for
     for (i = 0; i < size_source; i++) {
         destination[i] = source[i];
     }
@@ -33,8 +35,7 @@ void my_strcat(unsigned char * destination,
     register int size_destination = my_strlen(destination);
     register int size_keduanya = size_source + size_destination;
 
-    #pragma omp parallel
-    for
+    #pragma omp parallel for
     for (i = size_destination; i < size_keduanya; i++) {
         destination[i] = source[i - size_destination];
     }
@@ -46,8 +47,7 @@ int my_strcmp(const unsigned char * str1,
     register int i, flag = 1;
     register int len_str1 = my_strlen(str1);
 
-    #pragma omp parallel
-    for shared(flag)
+    #pragma omp parallel for shared(flag)
     for (i = 0; i < len_str1; i++) {
         if (str1[i] != str2[i]) {
             #pragma omp critical

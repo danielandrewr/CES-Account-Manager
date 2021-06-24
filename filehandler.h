@@ -16,6 +16,7 @@ void fprints(FILE *fptr,const unsigned char *string){
       fprintf(fptr,"%2.2x", string[i]);
    }
 }
+//fungsi untuk mengubah nilai hex dari file txt menjadi unsigned char dan memasukkannya ke pointer string
 unsigned char *Fgets(FILE *fptr, unsigned char *string){
 	char *temp = (char*) malloc(EMAIL_MAX*(sizeof(char)));
 	unsigned char *temp2 = (unsigned char*)malloc(3*sizeof(unsigned char));
@@ -33,7 +34,7 @@ unsigned char *Fgets(FILE *fptr, unsigned char *string){
 	temp2 = NULL;
 	return string;
 }
-// fungsi ngecek filenya ada isi
+// fungsi untuk mengecek apakah filenya memiliki isi
 bool ifFileNotNull(FILE *fptr) {
 	bool fileNotNull = false;
 
@@ -57,7 +58,7 @@ bool createFileWithMasterAccount(struct MasterAccount * head) {
     struct SlaveAccount * ptr_slave = NULL;
     FILE * fptr;
     fptr = fopen(fileName, "r");
-    if (fptr == NULL) { //kalo file baru
+    if (fptr == NULL) { //jika file baru
         fptr = fopen(fileName, "w");
     }
 
