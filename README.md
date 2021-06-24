@@ -2,7 +2,7 @@
 ---
 ## Gambaran Umum Program
 
-URL Video: 
+URL Video: [Youtube](Isi sini guys)
 
 Proyek ini adalah sebuah simulasi pengaplikasian algoritma enkripsi md5 (message digest 5) dan enkripsi vigenere pada autentikasi user dengan menggunakan kredensial.
 
@@ -34,7 +34,7 @@ Jika sebuah data akun disimpan di dalam memori dalam bentuk plaintext, hal terse
 Struktur data yang digunakan untuk menyimpan akun master dan akun slave adalah Linked List dan Stack. Multithreading dan parallel programming digunakan saat mengenkripsi dan mendekripsi string serta terdapat library string.h yang telah kami modifikasi menjadi versi paralel dibutuhkan (membuat yang dibutuhkan saja).
 
 ---
-## Penjelasan mengenai Code pada Program
+## Penjelasan mengenai Header pada Program
 
 ### 1.  ```parallel_string.h```
 
@@ -208,6 +208,13 @@ Header ```encipher.h``` berisi fungsi yang berguna untuk mengenkripsi dan mendek
 Header ```filehandler.h``` berisi ungsi untuk mencetak file database (tentunya yang telah terenkripsi ke dalam file .txt yang nantinya dapat digunakan lagi. 
 
 ---
+### BUG Program (di Devc++)
+1. Program hanya bisa bekerja dengan benar jika registrasi dilakukan lebih dari satu kali dalam satu waktu (tanpa exit program)
+2. Registrasi akun pertama selalu error jika ingin login.
+
+Bug hanya muncul jika program di-*compile* di DevC++. Program berjalan dengan benar jika program di-*compile* menggunakan compiler [replit.com](https://replit.com/@naufalfaza80/Proyek-Akhir) (compiler clang).
+
+---
 
 Final Advanced Programming Project
 
@@ -220,5 +227,3 @@ This project is made by group 1 of Proglan 2 which consists of:
 
 as final programming assignment in Even Semester 2020/2021 for course Advance Programming + Lab. 
 (ENCE602003) in Undergraduate of Computer Engineering study program, Department of Electrical Engineering, Faculty of Engineering, Universitas Indonesia.
-
-

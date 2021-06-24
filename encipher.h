@@ -27,15 +27,14 @@ int mod(int a, int b) { //function for modulo, since C can't moduled negative nu
 char encrypt(unsigned char * M,
     const unsigned char * key) {
     int maksKey, maksM;
-    #pragma omp single 
-	{
+    #pragma omp single {
         maksKey = my_strlen(key);
         maksM = my_strlen(M);
     }
     #pragma omp parallel shared(maksKey, maksM) 
 	{
         int from, to, i, j;
-        #pragma omp for
+        #pragma ompfor
         for (i = 0; i < maksM; i += maksKey + 1) {
             from = i;
             to = i + maksKey;
@@ -66,7 +65,7 @@ char decrypt(unsigned char * M,
         for (i = 0; i < maksM; i += maksKey + 1) {
             from = i;
             to = i + maksKey;
-            #pragma omp taskwait 
+            #pragma omp taskwait
 			{
                 for (j = from; j <= to; j++) {
                     M[j] = rsbox(M[j]); //inverse subbox
