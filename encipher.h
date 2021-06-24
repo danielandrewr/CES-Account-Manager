@@ -27,18 +27,20 @@ int mod(int a, int b) { //function for modulo, since C can't moduled negative nu
 char encrypt(unsigned char * M,
     const unsigned char * key) {
     int maksKey, maksM;
-    #pragma omp single {
+    #pragma omp single 
+	{
         maksKey = my_strlen(key);
         maksM = my_strlen(M);
     }
-    #pragma omp parallel shared(maksKey, maksM) {
+    #pragma omp parallel shared(maksKey, maksM) 
+	{
         int from, to, i, j;
-        #pragma omp
-        for
+        #pragma omp for
         for (i = 0; i < maksM; i += maksKey + 1) {
             from = i;
             to = i + maksKey;
-            #pragma omp task {
+            #pragma omp task 
+			{
                 for (j = from; j <= to; j++) {
                     M[j] = mod((M[j] + key[j % maksKey]), 256);
                     M[j] = sbox(M[j]);
@@ -52,18 +54,20 @@ char encrypt(unsigned char * M,
 char decrypt(unsigned char * M,
     const unsigned char * key) {
     int maksKey, maksM;
-    #pragma omp single {
+    #pragma omp single 
+	{
         maksKey = my_strlen(key);
         maksM = my_strlen(M);
     }
-    #pragma omp parallel shared(maksKey, maksM, M, key) {
+    #pragma omp parallel shared(maksKey, maksM, M, key) 
+	{
         int from, to, i, j;
-        #pragma omp
-        for
+        #pragma omp for
         for (i = 0; i < maksM; i += maksKey + 1) {
             from = i;
             to = i + maksKey;
-            #pragma omp taskwait {
+            #pragma omp taskwait 
+			{
                 for (j = from; j <= to; j++) {
                     M[j] = rsbox(M[j]); //inverse subbox
                     M[j] = mod((M[j] - key[j % maksKey]), 256); //vigenere function
