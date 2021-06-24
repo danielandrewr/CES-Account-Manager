@@ -2,7 +2,7 @@
 ---
 ## Gambaran Umum Program
 
-URL Video: [Youtube](Isi sini guys)
+Video: [![Youtube](https://i.imgur.com/Sch6kF9.png)](https://youtu.be/xti6zaxGJqk "Video Penjelasan Proyek Akhir Pemrograman Lanjut - Kelompok 1") 
 
 Proyek ini adalah sebuah simulasi pengaplikasian algoritma enkripsi md5 (message digest 5) dan enkripsi vigenere pada autentikasi user dengan menggunakan kredensial.
 
